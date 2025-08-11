@@ -7,19 +7,25 @@ const PORT = 5000;
 // parse request object into json object
 app.use(express.json());
 
-app.get("/", async (req, res) => {
+app.get("/user", async (req, res) => {
   return res.send(await findUser(req.body));
 });
 
-app.post("/", async (req, res) => {
+app.post("/user", async (req, res) => {
   const { isValid, validateMessage } = authenticateRequest(req.body);
   if (!isValid) {
-    console.log(req.body);
     return res.send(validateMessage);
   }
   const { success, createUserMessage } = await createUser(req.body);
   console.log(createUserMessage);
   return res.send(createUserMessage);
+});
+
+app.put("/user", async (req, res) => {
+  const { isValid, validateMessage } = authenticateRequest(req.body, { update: false });
+  if (!isValid) {
+    return res.send(validateMessage);
+  }
 });
 
 app.use((req, res) => {

@@ -1,45 +1,51 @@
-const ERROR_MGS = {
+const ERROR_MSG = {
   MISSING_EMAIL: "Please attach email to body",
-  INV_EMAIL: "Please enter valid email",
   MISSING_PASSWORD: "Please attach password to body",
+  MISSING_BODY: "Please attach email and/or password to body",
+  INV_EMAIL: "Please enter valid email",
 };
 
 const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-function authenticateRequest(body) {
-  let isValid;
-  let validateMessage;
+function authenticateRequest(body, options) {
+  let returnObj = {
+    isValid: undefined,
+    validateMessage: undefined,
+  };
+
+  if (options.update) {
+    if (!body.email && !body.password) {
+      returnObj.isValid = false;
+      returnObj.validateMessage = ERROR_MSG.MISSING_BODY;
+      return returnObj;
+    }
+
+    returnObj.isValid = true;
+    returnObj.validateMessage = "Seem good to me";
+    return returnObj;
+  }
 
   if (!body.email) {
-    isValid = false;
-    validateMessage = ERROR_MGS.MISSING_EMAIL;
-    return {
-      isValid,
-      validateMessage,
-    };
+    returnObj.isValid = false;
+    returnObj.validateMessage = ERROR_MSG.MISSING_EMAIL;
+    return returnObj;
   }
 
   if (!regex.test(body.email)) {
-    isValid = false;
-    validateMessage = ERROR_MGS.INV_EMAIL;
-    return {
-      isValid,
-      validateMessage,
-    };
+    returnObj.isValid = false;
+    returnObj.validateMessage = ERROR_MSG.INV_EMAIL;
+    return returnObj;
   }
 
   if (!body.password) {
-    isValid = false;
-    validateMessage = ERROR_MGS.MISSING_PASSWORD;
-    return {
-      isValid,
-      validateMessage,
-    };
+    returnObj.isValid = false;
+    returnObj.validateMessage = ERROR_MSG.MISSING_PASSWORD;
+    return returnObj;
   }
 
-  isValid = true;
-  validateMessage = "Seem good to me!";
-  return { isValid, validateMessage };
+  returnObj.isValid = true;
+  returnObj.validateMessage = "Seem good to me!";
+  return returnObj;
 }
 
 module.exports = { authenticateRequest };
