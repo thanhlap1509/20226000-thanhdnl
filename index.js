@@ -10,6 +10,7 @@ app.use(express.json());
 app.post("/", async (req, res) => {
   const { isValid, validateMessage } = authenticateRequest(req.body);
   if (!isValid) {
+    console.log(req.body);
     return res.send(validateMessage);
   }
   const { success, createUserMessage } = await createUser(req.body);

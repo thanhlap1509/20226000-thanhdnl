@@ -18,8 +18,8 @@ const connectToDatabase = async () => {
 };
 
 const checkDocumentExist = async function (data) {
-  const { email, password } = data;
-  let result = await userCollection.findOne({ email, password });
+  const { email } = data;
+  let result = await userCollection.findOne({ email });
   return !!result;
 };
 

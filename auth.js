@@ -4,7 +4,7 @@ const ERROR_MGS = {
   MISSING_PASSWORD: "Please attach password to body",
 };
 
-const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 function authenticateRequest(body) {
   let isValid;
