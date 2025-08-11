@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const uri = process.env.MONGODB_URI;
@@ -50,16 +50,30 @@ const createUser = async function (data) {
   }
 };
 
-const returnAllUsers = async function (data) {
+const findUser = async function (data) {
   try {
     await connectToDatabase();
-    let result = await userCollection.find();
+    const { _id, email } = data;
+    console.log(_id);
+    let result;
+    if (!_id && !email) {
+      result = await userCollection.find().toArray();
+    } else if (_id) {
+      result = await userCollection.findOne({ _id: new ObjectId(_id) });
+    } else {
+      result = await userCollection.findOne({ email });
+    }
+
+    if (!result) {
+      result = "There is no user by that information";
+    }
 
     return result;
   } catch (error) {
-    console.log(`Error inserting document ${error}`);
+    console.log(`Error retrieving documents ${error}`);
+    return `Error retrieving documents ${error}`;
   } finally {
     client.close();
   }
 };
-module.exports = { createUser };
+module.exports = { createUser, findUser };

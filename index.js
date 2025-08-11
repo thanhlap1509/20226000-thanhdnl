@@ -1,11 +1,15 @@
 const express = require("express");
 const { authenticateRequest } = require("./auth");
-const { createUser } = require("./db");
+const { createUser, findUser } = require("./db");
 const app = express();
 const PORT = 5000;
 
 // parse request object into json object
 app.use(express.json());
+
+app.get("/", async (req, res) => {
+  return res.send(await findUser(req.body));
+});
 
 app.post("/", async (req, res) => {
   const { isValid, validateMessage } = authenticateRequest(req.body);
