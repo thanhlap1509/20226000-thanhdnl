@@ -22,8 +22,8 @@ app.post("/", async (req, res) => {
   return res.send(createUserMessage);
 });
 
-app.all("/", (req, res) => {
-  return res.send("Welcome!");
+app.use((req, res) => {
+  res.status(404).send("Route not found");
 });
 
 app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
