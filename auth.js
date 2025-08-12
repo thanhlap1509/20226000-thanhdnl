@@ -12,9 +12,8 @@ function authenticateRequest(body, options) {
     isValid: undefined,
     validateMessage: undefined,
   };
-
   // validate for updating document
-  if (options.update) {
+  if (options && options.update) {
     if (!body.email && !body.password) {
       returnObj.isValid = false;
       returnObj.validateMessage = ERROR_MSG.MISSING_BODY;

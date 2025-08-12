@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateRequest } = require("./auth");
-const { createUser, findUsers } = require("./db");
+const { createUsers, findUsers } = require("./db");
 const app = express();
 const PORT = 5000;
 
@@ -12,13 +12,7 @@ app.get("/user", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  const { isValid, validateMessage } = authenticateRequest(req.body);
-  if (!isValid) {
-    return res.send(validateMessage);
-  }
-  const { success, createUserMessage } = await createUser(req.body);
-  console.log(createUserMessage);
-  return res.send(createUserMessage);
+  return res.send(await createUsers(req.body));
 });
 
 app.put("/user", async (req, res) => {

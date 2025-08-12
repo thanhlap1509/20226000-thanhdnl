@@ -1,4 +1,5 @@
 const { MongoClient, ObjectId } = require("mongodb");
+const { authenticateRequest } = require("./auth");
 require("dotenv").config();
 
 const uri = process.env.MONGODB_URI;
@@ -11,7 +12,6 @@ const userCollection = client.db(dbname).collection(collection_name);
 const connectToDatabase = async () => {
   try {
     await client.connect();
-    console.log(`Connected to the ${dbname} database, ${collection_name} collection`);
   } catch (err) {
     console.error(`Error connecting to the database: ${err}`);
   }
@@ -23,28 +23,56 @@ const checkDocumentExist = async function (data) {
   return !!result;
 };
 
-const createUser = async function (data) {
-  let success;
-  let createUserMessage;
+const createUsers = async function (data) {
+  if (!(data instanceof Object)) {
+    return "Please enter body in a JSON/list of JSON format";
+  }
+
+  // Validate data format
+  let isValid, validateMessage;
+  let dataIsArray;
+  if (Array.isArray(data)) {
+    dataIsArray = 1;
+    if (data.length === 0) return "List is empty, no document inserted";
+    for (const [index, value] of data.entries()) {
+      ({ isValid, validateMessage } = authenticateRequest(value));
+      if (!isValid) {
+        return `${validateMessage} at index ${index}`;
+      }
+    }
+  } else {
+    dataIsArray = 0;
+    ({ isValid, validateMessage } = authenticateRequest(data));
+
+    if (!isValid) {
+      return validateMessage;
+    }
+  }
+
+  // Check if data exist and insert if not
   try {
     await connectToDatabase();
-    const { email, password } = data;
-    const hasUser = await checkDocumentExist(data);
-    if (hasUser) {
-      success = false;
-      createUserMessage = `Exist an user with email ${email}`;
-      return { success, createUserMessage };
+
+    // If data is a list of object
+    if (dataIsArray) {
+      // Check if any document exist
+      for (const [index, value] of data.entries()) {
+        if (await checkDocumentExist(value)) {
+          return `Exist an user with email ${value.email}`;
+        }
+      }
+
+      return await userCollection.insertMany(data);
     }
 
-    await userCollection.insertOne({ email, password });
-
-    success = true;
-    createUserMessage = `Successfully create an user with email ${email}`;
-    return { success, createUserMessage };
+    // If data is an single object
+    if (await checkDocumentExist(data)) {
+      return `Exist an user with email ${data.email}`;
+    }
+    return await userCollection.insertOne(data);
   } catch (error) {
-    success = false;
     createUserMessage = `Error inserting document ${error}`;
-    return { success, createUserMessage };
+    return createUserMessage;
   } finally {
     client.close();
   }
@@ -114,4 +142,4 @@ const findUsers = async function (data) {
     client.close();
   }
 };
-module.exports = { createUser, findUsers };
+module.exports = { createUsers, findUsers };
