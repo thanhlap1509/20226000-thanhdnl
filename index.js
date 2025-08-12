@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateRequest } = require("./auth");
-const { createUser, findUser } = require("./db");
+const { createUser, findUsers } = require("./db");
 const app = express();
 const PORT = 5000;
 
@@ -8,7 +8,7 @@ const PORT = 5000;
 app.use(express.json());
 
 app.get("/user", async (req, res) => {
-  return res.send(await findUser(req.body));
+  return res.send(await findUsers(req.body));
 });
 
 app.post("/user", async (req, res) => {
@@ -22,6 +22,7 @@ app.post("/user", async (req, res) => {
 });
 
 app.put("/user", async (req, res) => {
+  // check if body has email and/or password to update
   const { isValid, validateMessage } = authenticateRequest(req.body, { update: false });
   if (!isValid) {
     return res.send(validateMessage);

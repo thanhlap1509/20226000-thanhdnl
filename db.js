@@ -50,34 +50,63 @@ const createUser = async function (data) {
   }
 };
 
-const findUser = async function (data) {
+const findSingleUser = async function (data) {
+  const { _id } = data;
+  return _id ? await userCollection.findOne({ _id: new ObjectId(_id) }) : _id;
+};
+
+const findUsers = async function (data) {
   try {
     await connectToDatabase();
-
-    // check undefined body
+    // Check undefined body
     if (!data) {
       return await userCollection.find().toArray();
     }
 
+    // Check non object body
     if (!(data instanceof Object)) {
-      return "Please enter body in a JSON format";
+      return "Please enter body in a JSON/list of JSON format";
     }
 
-    const { _id, email } = data;
+    // If body is array of object
+    const results = [];
     let result;
-    if (!_id && !email) {
-      result = await userCollection.find().toArray();
-    } else if (_id) {
-      result = await userCollection.findOne({ _id: new ObjectId(_id) });
-    } else {
-      result = await userCollection.findOne({ email });
+    if (Array.isArray(data)) {
+      // Return all documents if empty array
+      if (data.length === 0) return await userCollection.find().toArray();
+
+      for (const [index, value] of data.entries()) {
+        // value must be an object {}
+        if (Array.isArray(value) || !(value instanceof Object)) {
+          console.log(value, index, value instanceof Object);
+          console.log("here");
+
+          return "Please enter body in a JSON/list of JSON format";
+        }
+
+        result = await findSingleUser(value);
+
+        if (result instanceof Object) {
+          results.push(result);
+        } else {
+          return `Error retrieving document at index ${index}`;
+        }
+      }
+      return results;
     }
 
-    if (!result) {
-      result = "There is no user by that information";
+    // Return all documents if empty object
+    if (Object.keys(data).length === 0) {
+      return await userCollection.find().toArray();
     }
 
-    return result;
+    // If body is non empty object
+    result = await findSingleUser(data);
+
+    if (result instanceof Object) {
+      return result;
+    }
+    return "Enter valid _id to search for users";
   } catch (error) {
     console.log(`Error retrieving documents ${error}`);
     return `Error retrieving documents ${error}`;
@@ -85,4 +114,4 @@ const findUser = async function (data) {
     client.close();
   }
 };
-module.exports = { createUser, findUser };
+module.exports = { createUser, findUsers };
