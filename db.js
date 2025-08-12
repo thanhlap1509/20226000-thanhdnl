@@ -53,8 +53,17 @@ const createUser = async function (data) {
 const findUser = async function (data) {
   try {
     await connectToDatabase();
+
+    // check undefined body
+    if (!data) {
+      return await userCollection.find().toArray();
+    }
+
+    if (!(data instanceof Object)) {
+      return "Please enter body in a JSON format";
+    }
+
     const { _id, email } = data;
-    console.log(_id);
     let result;
     if (!_id && !email) {
       result = await userCollection.find().toArray();
