@@ -13,6 +13,7 @@ function authenticateRequest(body, options) {
     validateMessage: undefined,
   };
 
+  // validate for updating document
   if (options.update) {
     if (!body.email && !body.password) {
       returnObj.isValid = false;
