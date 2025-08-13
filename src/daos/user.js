@@ -23,9 +23,15 @@ const findUser = async (condition) => {
   return null;
 };
 
+const returnAllUsers = async () => {
+  return await User.find({});
+};
+
 const updateUser = async (userId, userData) => {
+  console.log("Id is " + userId);
+  console.log(userData);
   const user = await User.findByIdAndUpdate(userId, userData, { new: true });
-  console.log(user);
+  console.log("user after update is " + user);
   return user;
 };
 
@@ -34,4 +40,10 @@ const deleteUser = async (userId) => {
   console.log(user);
 };
 
-module.exports = { createUser, findUser, updateUser, deleteUser };
+module.exports = {
+  createUser,
+  findUser,
+  returnAllUsers,
+  updateUser,
+  deleteUser,
+};

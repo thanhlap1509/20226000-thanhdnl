@@ -5,7 +5,7 @@ mongoose
   .connect(MONGODB_URI, {
     dbName: "test",
   })
-  .then((value) => {
+  .then(() => {
     console.log("Connected to db");
   })
   .catch((err) => {

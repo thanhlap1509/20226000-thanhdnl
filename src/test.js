@@ -1,5 +1,4 @@
 const express = require("express");
-const { ObjectId } = require("mongoose").Types;
 const app = express();
 console.log("HHHHHHHHHHH");
 require("dotenv").config();
@@ -8,7 +7,7 @@ require("dotenv").config();
 require("./models");
 
 // TODO: Test CRUD operation from daos
-const { createUser, findUser, updateUser, deleteUser } = require("./daos");
+// const { createUser, findUser, updateUser, deleteUser } = require("./daos");
 
 const { PORT } = require("./configs");
 
