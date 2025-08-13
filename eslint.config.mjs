@@ -22,6 +22,20 @@ export default defineConfig([
     },
   },
   {
+    files: ["**/*/middlewares/errorHandler.{js,mjs,cjs}"],
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    extends: [js.configs.recommended, prettierConfig],
+    languageOptions: { globals: globals.browser },
+    rules: {
+      semi: ["error", "always"],
+      "prettier/prettier": "off",
+      "max-len": ["warn", { code: 80 }],
+      "no-unused-vars": "off",
+    },
+  },
+  {
     files: ["**/*.js"],
     languageOptions: { sourceType: "commonjs" },
   },

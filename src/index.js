@@ -1,16 +1,23 @@
-// TODO: Add error handling to validation, controller, service, route, daos
 const express = require("express");
 const app = express();
 
 require("dotenv").config();
-require("./models");
+const { closeConnection } = require("./models");
 
 const { PORT } = require("./configs");
 const userRouter = require("./routes");
+const { errorHandler, routeHandler } = require("./middlewares");
+const { shutdown } = require("./utils");
 
 app.use(express.json());
 app.use("/api", userRouter);
+app.use(routeHandler);
+app.use(errorHandler);
 
-app.listen(PORT, () => {
-  `App is runnning on port ${PORT}`;
+const server = app.listen(PORT, () => {
+  console.log(`App is runnning on port ${PORT}`);
 });
+
+process.on("SIGINT", () => shutdown(server, closeConnection));
+process.on("SIGTERM", () => shutdown(server, closeConnection));
+process.on("SIGKILL", () => shutdown(server, closeConnection));
