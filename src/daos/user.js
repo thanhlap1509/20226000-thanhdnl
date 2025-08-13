@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongoose").Types;
 const User = require("../models/user");
 
 const createUser = async (userData) => {
@@ -7,20 +6,10 @@ const createUser = async (userData) => {
   return user;
 };
 
-const findUser = async (condition) => {
-  if (ObjectId.isValid(condition)) {
-    const user = await User.findById(condition);
-    console.log(user);
-    return user;
-  }
-
-  if (condition instanceof Object && Object.keys(condition).length > 0) {
-    const user = await User.find(condition);
-    console.log(user);
-    return user;
-  }
-
-  return null;
+const findUserById = async (userId) => {
+  const user = await User.findById(userId);
+  console.log(user);
+  return user;
 };
 
 const returnAllUsers = async () => {
@@ -42,7 +31,7 @@ const deleteUser = async (userId) => {
 
 module.exports = {
   createUser,
-  findUser,
+  findUserById,
   returnAllUsers,
   updateUser,
   deleteUser,

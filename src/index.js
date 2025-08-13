@@ -1,3 +1,4 @@
+// TODO: Add error handling to validation, controller, service, route, daos
 const express = require("express");
 const app = express();
 

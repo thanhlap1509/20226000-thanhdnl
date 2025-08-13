@@ -4,8 +4,8 @@ const createUser = async (data) => {
   return await userDaos.createUser(data);
 };
 
-const getUser = async (condition) => {
-  return await userDaos.findUser(condition);
+const getUser = async (userId) => {
+  return await userDaos.findUserById(userId);
 };
 
 const getAllUsers = async () => {
