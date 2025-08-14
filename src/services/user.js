@@ -13,12 +13,10 @@ const getAllUsers = async (condition) => {
     return await userDaos.returnAllUsers();
   }
   condition = prepareSortCondition(condition);
-  console.log(condition);
   return await userDaos.returnAllUsers(condition);
 };
 
 const updateUser = async (userId, data) => {
-  console.log("Id in service is " + userId);
   return await userDaos.updateUser(userId, data);
 };
 

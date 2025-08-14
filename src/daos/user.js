@@ -1,15 +1,11 @@
 const { userModel } = require("../models/user");
 
 const createUser = async (userData) => {
-  const user = await userModel.create(userData);
-  console.log(user);
-  return user;
+  return await userModel.create(userData);
 };
 
 const findUserById = async (userId) => {
-  const user = await userModel.findById(userId);
-  console.log(user);
-  return user;
+  return await userModel.findById(userId);
 };
 
 const returnAllUsers = async (sortCondition) => {
@@ -20,13 +16,9 @@ const returnAllUsers = async (sortCondition) => {
 };
 
 const updateUser = async (userId, userData) => {
-  console.log("Id is " + userId);
-  console.log(userData);
-  const user = await userModel.findByIdAndUpdate(userId, userData, {
+  return await userModel.findByIdAndUpdate(userId, userData, {
     new: true,
   });
-  console.log("user after update is " + user);
-  return user;
 };
 
 const deleteUser = async (userId) => {
