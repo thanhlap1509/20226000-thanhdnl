@@ -9,7 +9,7 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const users = await userService.getAllUsers();
+  const users = await userService.getAllUsers(req.query.sort_by);
   res.send(users);
 });
 

@@ -23,4 +23,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("User", userSchema);
+const userFields = Object.keys(userSchema.paths);
+userFields.push("__v");
+
+module.exports.userModel = mongoose.model("User", userSchema);
+module.exports.userFields = userFields.sort();

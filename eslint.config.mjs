@@ -18,7 +18,7 @@ export default defineConfig([
     rules: {
       semi: ["error", "always"],
       "prettier/prettier": "off",
-      "max-len": ["warn", { code: 80 }],
+      "max-len": ["warn", { code: 100 }],
     },
   },
   {

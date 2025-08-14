@@ -1,5 +1,5 @@
 const userDaos = require("../daos");
-
+const { prepareSortCondition } = require("../utils");
 const createUser = async (data) => {
   return await userDaos.createUser(data);
 };
@@ -8,8 +8,13 @@ const getUser = async (userId) => {
   return await userDaos.findUserById(userId);
 };
 
-const getAllUsers = async () => {
-  return await userDaos.returnAllUsers();
+const getAllUsers = async (condition) => {
+  if (!condition) {
+    return await userDaos.returnAllUsers();
+  }
+  condition = prepareSortCondition(condition);
+  console.log(condition);
+  return await userDaos.returnAllUsers(condition);
 };
 
 const updateUser = async (userId, data) => {
