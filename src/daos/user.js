@@ -30,8 +30,7 @@ const updateUser = async (userId, userData) => {
 };
 
 const deleteUser = async (userId) => {
-  const user = await userModel.findByIdAndDelete(userId);
-  console.log(user);
+  return await userModel.findByIdAndDelete(userId);
 };
 
 const getUserCount = async () => {

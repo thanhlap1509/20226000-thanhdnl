@@ -13,22 +13,34 @@ const getAllUsers = catchAsync(async (req, res) => {
   res.send(users);
 });
 
-const getUser = catchAsync(async (req, res) => {
+const getUser = catchAsync(async (req, res, next) => {
   const user = await userService.getUser(req.params.userId);
-  res.send(user);
+  if (user) {
+    res.send(user);
+  } else {
+    next();
+  }
 });
 
-const updateUser = catchAsync(async (req, res) => {
+const updateUser = catchAsync(async (req, res, next) => {
   console.log("Id in controller is " + req.params.userId);
   console.log(req.body);
 
   const user = await userService.updateUser(req.params.userId, req.body);
-  res.send(user);
+  if (user) {
+    res.send(user);
+  } else {
+    next();
+  }
 });
 
-const deleteUser = catchAsync(async (req, res) => {
-  await userService.deleteUser(req.params.userId);
-  res.status(StatusCodes.NO_CONTENT).send();
+const deleteUser = catchAsync(async (req, res, next) => {
+  const user = await userService.deleteUser(req.params.userId);
+  if (user) {
+    res.status(StatusCodes.NO_CONTENT).send();
+  } else {
+    next();
+  }
 });
 
 const getUserCount = catchAsync(async (req, res) => {
