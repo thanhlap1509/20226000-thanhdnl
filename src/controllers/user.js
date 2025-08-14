@@ -31,10 +31,18 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(StatusCodes.NO_CONTENT).send();
 });
 
+const getUserCount = catchAsync(async (req, res) => {
+  const userCount = await userService.getUserCount();
+  console.log(userCount);
+
+  res.send({ userCount });
+});
+
 module.exports = {
   createUser,
   getUser,
   getAllUsers,
   updateUser,
   deleteUser,
+  getUserCount,
 };

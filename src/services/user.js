@@ -26,4 +26,8 @@ const deleteUser = async (userId) => {
   return await userDaos.deleteUser(userId);
 };
 
-module.exports = { createUser, updateUser, getUser, getAllUsers, deleteUser };
+const getUserCount = async () => {
+  return await userDaos.getUserCount();
+};
+
+module.exports = { createUser, updateUser, getUser, getAllUsers, deleteUser, getUserCount };

@@ -34,10 +34,15 @@ const deleteUser = async (userId) => {
   console.log(user);
 };
 
+const getUserCount = async () => {
+  return userModel.countDocuments({});
+};
+
 module.exports = {
   createUser,
   findUserById,
   returnAllUsers,
   updateUser,
   deleteUser,
+  getUserCount,
 };
