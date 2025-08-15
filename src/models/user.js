@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       lowercase: true,
       validate: (value) => {
@@ -20,11 +19,10 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { timestamps: true },
+  { versionKey: false },
 );
 
 const userFields = Object.keys(userSchema.paths);
-userFields.push("__v");
 
 module.exports.userModel = mongoose.model("User", userSchema);
 module.exports.userFields = userFields.sort();

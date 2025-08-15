@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-
+// role: admin, user
+// createdAt
+// 2-3m là ok
 require("dotenv").config();
 const { closeConnection } = require("./models");
 
@@ -9,7 +11,7 @@ const userRouter = require("./routes");
 const { errorHandler, routeHandler } = require("./middlewares");
 const { shutdown } = require("./utils");
 
-app.use(express.json());
+app.use(express.json({ limit: "100mb" }));
 app.use("/api", userRouter);
 app.use(routeHandler);
 app.use(errorHandler);
@@ -18,6 +20,10 @@ const server = app.listen(PORT, () => {
   console.log(`App is runnning on port ${PORT}`);
 });
 
+process.on("SIGUSR2", () => shutdown(server, closeConnection));
 process.on("SIGINT", () => shutdown(server, closeConnection));
-process.on("SIGTERM", () => shutdown(server, closeConnection));
+process.on("SIGTERM", () => {
+  console.log("sigterm");
+  shutdown(server, closeConnection);
+});
 process.on("SIGKILL", () => shutdown(server, closeConnection));

@@ -3,6 +3,7 @@ const errorCode = require("../error");
 
 const errorHandler = (err, req, res, next) => {
   console.log("-------------");
+  console.log(err);
   console.log(err.code);
   console.log(err.statusCode);
 

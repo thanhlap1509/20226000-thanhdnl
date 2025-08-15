@@ -1,7 +1,12 @@
 const { userModel } = require("../models/user");
 
 const createUser = async (userData) => {
-  return await userModel.create(userData);
+  const user = await userModel.insertOne(userData);
+  return user;
+};
+
+const createUsers = async (usersData) => {
+  return await userModel.insertMany(usersData, { ordered: false });
 };
 
 const findUserById = async (userId) => {
@@ -31,6 +36,7 @@ const getUserCount = async () => {
 
 module.exports = {
   createUser,
+  createUsers,
   findUserById,
   returnAllUsers,
   updateUser,

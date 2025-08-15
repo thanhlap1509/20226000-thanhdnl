@@ -1,6 +1,9 @@
 const userDaos = require("../daos");
 const { prepareSortCondition } = require("../utils");
 const createUser = async (data) => {
+  if (Array.isArray(data)) {
+    return await userDaos.createUsers(data);
+  }
   return await userDaos.createUser(data);
 };
 

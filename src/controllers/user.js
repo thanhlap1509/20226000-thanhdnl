@@ -3,8 +3,8 @@ const userService = require("../services");
 const { catchAsync } = require("../utils");
 
 const createUser = catchAsync(async (req, res) => {
-  await userService.createUser(req.body);
-  res.status(StatusCodes.CREATED).send("User created");
+  const user = await userService.createUser(req.body);
+  res.status(StatusCodes.CREATED).send(user);
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
