@@ -13,11 +13,11 @@ const findUserById = async (userId) => {
   return await userModel.findById(userId);
 };
 
-const returnAllUsers = async (sortCondition) => {
+const returnAllUsers = async (sortCondition, limit, offset) => {
   if (!sortCondition) {
-    return await userModel.find({});
+    return await userModel.find({}).skip(offset).limit(limit);
   }
-  return await userModel.find({}).sort(sortCondition);
+  return await userModel.find({}).sort(sortCondition).skip(offset).limit(limit);
 };
 
 const updateUser = async (userId, userData) => {

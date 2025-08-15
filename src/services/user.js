@@ -1,5 +1,5 @@
 const userDaos = require("../daos");
-const { prepareSortCondition } = require("../utils");
+const { prepareSortsortCondition } = require("../utils");
 const createUser = async (data) => {
   if (Array.isArray(data)) {
     return await userDaos.createUsers(data);
@@ -11,12 +11,12 @@ const getUser = async (userId) => {
   return await userDaos.findUserById(userId);
 };
 
-const getAllUsers = async (condition) => {
-  if (!condition) {
-    return await userDaos.returnAllUsers();
+const getAllUsers = async (sortCondition, limit, offset) => {
+  if (!sortCondition) {
+    return await userDaos.returnAllUsers(null, limit, offset);
   }
-  condition = prepareSortCondition(condition);
-  return await userDaos.returnAllUsers(condition);
+  sortCondition = prepareSortsortCondition(sortCondition);
+  return await userDaos.returnAllUsers(sortCondition, limit, offset);
 };
 
 const updateUser = async (userId, data) => {

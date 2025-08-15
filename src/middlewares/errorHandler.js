@@ -26,6 +26,14 @@ const errorHandler = (err, req, res, next) => {
       message = "This email is already register";
       returnCode = errorCode.BAD_REQUEST;
       break;
+    case errorCode.OUT_OF_MEM:
+      message = "Atlas quota is full";
+      returnCode = errorCode.SERVER_ERROR;
+      details = err.errorResponse.errmsg;
+      break;
+    case errorCode.REQUEST_TOO_LARGE:
+      message = "Request is too large";
+      break;
     default:
       message = "Don't know";
       returnCode = errorCode.OK;
