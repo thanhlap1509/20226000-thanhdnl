@@ -1,4 +1,5 @@
 const { userModel } = require("../models/user");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
@@ -10,6 +11,9 @@ const createUsers = async (usersData) => {
 };
 
 const findUserById = async (userId) => {
+  if (!ObjectId.isValid(userId)) {
+    return null;
+  }
   return await userModel.findById(userId);
 };
 

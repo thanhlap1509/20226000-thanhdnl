@@ -4,6 +4,7 @@ const { Joi, validate } = require("express-validation");
 const singleUserSchema = Joi.object({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().trim().required(),
+  role: Joi.string().trim().required().valid("admin", "user"),
 });
 
 const userData = {
@@ -22,14 +23,10 @@ const userId = {
 };
 
 const userDocument = {
-  params: Joi.object({
-    userId: Joi.string().trim().required(),
-  }).required(),
-  body: Joi.object({
-    email: Joi.string().email().trim().lowercase(),
-    password: Joi.string().trim(),
-  })
-    .or("email", "password")
+  params: userId.params,
+  body: singleUserSchema
+    .fork(["email", "password", "role"], (schema) => schema.required())
+    .or("email", "password", "role")
     .required(),
 };
 
