@@ -18,8 +18,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    role: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: ["admin", "user"],
+    },
   },
   { versionKey: false },
+  { timestamps: { createdAt: true, updatedAt: false } },
 );
 
 const userFields = Object.keys(userSchema.paths);

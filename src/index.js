@@ -20,6 +20,7 @@ const server = app.listen(PORT, () => {
   console.log(`App is runnning on port ${PORT}`);
 });
 
+/* eslint-disable no-undef */
 process.on("SIGUSR2", () => shutdown(server, closeConnection));
 process.on("SIGINT", () => shutdown(server, closeConnection));
 process.on("SIGTERM", () => {
