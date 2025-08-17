@@ -1,6 +1,7 @@
 const { userModel } = require("../models/user");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { userRoles } = require("../models/user");
+const { binarySearch } = require("../utils");
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
   return user;
@@ -39,14 +40,22 @@ const getUserCount = async () => {
 };
 
 const getUserCountByRoles = async () => {
-  const counts = await Promise.all(
+  return await Promise.all(
     userRoles.map(async (role) => ({
       role,
       count: await userModel.countDocuments({ role }),
     })),
   );
+};
 
-  return counts;
+const getUserCountByRole = async (role) => {
+  if (binarySearch(userRoles, role, (a, b) => a.localeCompare(b)) === -1) {
+    return null;
+  }
+  return await {
+    role,
+    count: await userModel.countDocuments({ role }),
+  };
 };
 
 module.exports = {
@@ -58,4 +67,5 @@ module.exports = {
   deleteUser,
   getUserCount,
   getUserCountByRoles,
+  getUserCountByRole,
 };

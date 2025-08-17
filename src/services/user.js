@@ -35,6 +35,10 @@ const getUserCountByRoles = async () => {
   return await userDaos.getUserCountByRoles();
 };
 
+const getUserCountByRole = async (role) => {
+  return await userDaos.getUserCountByRole(role);
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -43,4 +47,5 @@ module.exports = {
   deleteUser,
   getUserCount,
   getUserCountByRoles,
+  getUserCountByRole,
 };

@@ -6,4 +6,5 @@ router.route("/").get(userController.getUserCount);
 
 router.route("/by-role").get(userController.getUserCountByRoles);
 
+router.route("/by-role/:role").get(userController.getUserCountByRole);
 module.exports = router;

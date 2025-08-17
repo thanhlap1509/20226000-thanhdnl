@@ -49,6 +49,17 @@ const getUserCountByRoles = catchAsync(async (req, res) => {
   res.send(userStats);
 });
 
+const getUserCountByRole = catchAsync(async (req, res, next) => {
+  const userStats = await userService.getUserCountByRole(req.params.role);
+
+  if (userStats) {
+    return res.send(userStats);
+  } else {
+    console.log("none");
+    next();
+  }
+});
+
 module.exports = {
   createUser,
   getUser,
@@ -57,4 +68,5 @@ module.exports = {
   deleteUser,
   getUserCount,
   getUserCountByRoles,
+  getUserCountByRole,
 };
