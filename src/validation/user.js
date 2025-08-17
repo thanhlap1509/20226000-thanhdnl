@@ -1,10 +1,13 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
 const { Joi, validate } = require("express-validation");
-
+const { userRoles } = require("../models/user");
 const createUser = Joi.object({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().trim().required(),
-  role: Joi.string().trim().required().valid("admin", "user"),
+  role: Joi.string()
+    .trim()
+    .required()
+    .valid(...userRoles),
 });
 
 const createUsers = {

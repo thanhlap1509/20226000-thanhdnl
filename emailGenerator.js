@@ -97,7 +97,7 @@ function randomPassword(length = 8) {
 
 // Send POST request
 async function sendRandomUser() {
-  const NUM = 2;
+  const NUM = 1000000;
   let users = [];
   for (let i = 0; i < NUM; i++) {
     users.push({
@@ -105,7 +105,7 @@ async function sendRandomUser() {
       password: randomPassword(),
       role: getRoles(),
     });
-    if ((i + 1) % 1 === 0) {
+    if ((i + 1) % 100000 === 0) {
       console.log(i + 1);
       await fetch("http://localhost:5000/api/user", {
         method: "POST",

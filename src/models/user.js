@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const userRoles = ["admin", "user"];
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -32,3 +33,4 @@ const userFields = Object.keys(userSchema.paths);
 
 module.exports.userModel = mongoose.model("User", userSchema);
 module.exports.userFields = userFields.sort();
+module.exports.userRoles = userRoles;

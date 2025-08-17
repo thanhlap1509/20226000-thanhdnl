@@ -1,8 +1,5 @@
 const express = require("express");
 const app = express();
-// role: admin, user
-// createdAt
-// 2-3m là ok
 require("dotenv").config();
 const { closeConnection } = require("./models");
 
