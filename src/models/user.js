@@ -33,8 +33,10 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.index({ role: 1 });
+userSchema.index({ domain: 1 });
 
 const userFields = Object.keys(userSchema.paths);
+
 module.exports.userModel = mongoose.model("User", userSchema);
 module.exports.userFields = userFields.sort();
 module.exports.userRoles = userRoles;
