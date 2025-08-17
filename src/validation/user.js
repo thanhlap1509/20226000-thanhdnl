@@ -28,9 +28,9 @@ const queryUserId = {
 const updateUser = {
   params: queryUserId.params,
   body: createUser
-    .fork(["email", "password", "role"], (schema) => schema.required())
+    .fork(["email", "password", "role"], (schema) => schema.optional())
     .or("email", "password", "role")
-    .required(),
+    .with("domain", "email"),
 };
 
 module.exports = {

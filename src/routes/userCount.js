@@ -4,7 +4,9 @@ const userController = require("../controllers");
 
 router.route("/").get(userController.getUserCount);
 
-router.route("/by-role").get(userController.getUserCountByRoles);
+router.route("/role").get(userController.getUserCountByRoles);
 
-router.route("/by-role/:role").get(userController.getUserCountByRole);
+router.route("/role/:role").get(userController.getUserCountByRole);
+
+router.route("/email-domain/").get(userController.getUserCountByEmailDomains);
 module.exports = router;

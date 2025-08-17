@@ -2,12 +2,23 @@ const { userModel } = require("../models/user");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { userRoles } = require("../models/user");
 const { binarySearch } = require("../utils");
+
+const addEmailDomain = (data) => {
+  data.domain = data.email.split("@")[1];
+  return data;
+};
+
 const createUser = async (userData) => {
+  userData = addEmailDomain(userData);
   const user = await userModel.insertOne(userData);
   return user;
 };
 
 const createUsers = async (usersData) => {
+  usersData = usersData.map((data) => {
+    data = addEmailDomain(data);
+    return data;
+  });
   return await userModel.insertMany(usersData, { ordered: false });
 };
 
@@ -26,6 +37,9 @@ const returnAllUsers = async (sortCondition, limit, offset) => {
 };
 
 const updateUser = async (userId, userData) => {
+  if (userData.email) {
+    userData = addEmailDomain(userData);
+  }
   return await userModel.findByIdAndUpdate(userId, userData, {
     new: true,
   });
@@ -58,6 +72,17 @@ const getUserCountByRole = async (role) => {
   };
 };
 
+const getUserCountByEmailDomains = async () => {
+  return await userModel.aggregate([
+    {
+      $group: {
+        _id: "$domain",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+};
+
 module.exports = {
   createUser,
   createUsers,
@@ -68,4 +93,5 @@ module.exports = {
   getUserCount,
   getUserCountByRoles,
   getUserCountByRole,
+  getUserCountByEmailDomains,
 };

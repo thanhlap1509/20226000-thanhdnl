@@ -39,6 +39,10 @@ const getUserCountByRole = async (role) => {
   return await userDaos.getUserCountByRole(role);
 };
 
+const getUserCountByEmailDomains = async () => {
+  return await userDaos.getUserCountByEmailDomains();
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -48,4 +52,5 @@ module.exports = {
   getUserCount,
   getUserCountByRoles,
   getUserCountByRole,
+  getUserCountByEmailDomains,
 };
