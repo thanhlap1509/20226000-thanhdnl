@@ -68,7 +68,10 @@ const fakeEmailDomains = [
   "tempmailer.com",
   "fakeremail.com",
 ];
-
+const roles = ["admin", "user"];
+function getRoles() {
+  return roles[Math.floor(Math.random() * 2)];
+}
 function randomEmailName(length) {
   var result = "";
   var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -81,7 +84,7 @@ function randomEmailName(length) {
 
 // Generate random email
 function randomEmail() {
-  const username = randomEmailName(12);
+  const username = randomEmailName(10);
   const domain = fakeEmailDomains[Math.floor(Math.random() * fakeEmailDomains.length)];
   return `${username}@${domain}`;
 }
@@ -100,6 +103,7 @@ async function sendRandomUser() {
     users.push({
       email: randomEmail(),
       password: randomPassword(),
+      role: getRoles(),
     });
     if ((i + 1) % 1 === 0) {
       console.log(i + 1);

@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "user"],
     },
   },
-  { versionKey: false },
-  { timestamps: { createdAt: true, updatedAt: false } },
+  { versionKey: false, timestamps: { createdAt: true, updatedAt: false } },
 );
 
 const userFields = Object.keys(userSchema.paths);
