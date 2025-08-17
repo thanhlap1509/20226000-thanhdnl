@@ -35,7 +35,7 @@ const deleteUser = async (userId) => {
 };
 
 const getUserCount = async () => {
-  return userModel.countDocuments({});
+  return await userModel.estimatedDocumentCount();
 };
 
 module.exports = {
