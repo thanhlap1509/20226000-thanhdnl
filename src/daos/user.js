@@ -83,6 +83,13 @@ const getUserCountByEmailDomains = async () => {
   ]);
 };
 
+const getUserCountByEmailDomain = async (domain) => {
+  return await {
+    domain,
+    count: await userModel.countDocuments({ domain }),
+  };
+};
+
 module.exports = {
   createUser,
   createUsers,
@@ -94,4 +101,5 @@ module.exports = {
   getUserCountByRoles,
   getUserCountByRole,
   getUserCountByEmailDomains,
+  getUserCountByEmailDomain,
 };

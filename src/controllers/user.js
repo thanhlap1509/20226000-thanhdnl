@@ -65,6 +65,11 @@ const getUserCountByEmailDomains = catchAsync(async (req, res) => {
   res.send(userStats);
 });
 
+const getUserCountByEmailDomain = catchAsync(async (req, res) => {
+  const userStats = await userService.getUserCountByEmailDomain(req.params.domain);
+  res.send(userStats);
+});
+
 module.exports = {
   createUser,
   getUser,
@@ -75,4 +80,5 @@ module.exports = {
   getUserCountByRoles,
   getUserCountByRole,
   getUserCountByEmailDomains,
+  getUserCountByEmailDomain,
 };
