@@ -29,8 +29,9 @@ const userSchema = new mongoose.Schema(
   { versionKey: false, timestamps: { createdAt: true, updatedAt: false } },
 );
 
-const userFields = Object.keys(userSchema.paths);
+userSchema.index({ role: 1 });
 
+const userFields = Object.keys(userSchema.paths);
 module.exports.userModel = mongoose.model("User", userSchema);
 module.exports.userFields = userFields.sort();
 module.exports.userRoles = userRoles;

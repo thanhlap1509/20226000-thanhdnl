@@ -44,6 +44,11 @@ const getUserCount = catchAsync(async (req, res) => {
   res.send({ userCount });
 });
 
+const getUserCountByRoles = catchAsync(async (req, res) => {
+  const userStats = await userService.getUserCountByRoles();
+  res.send(userStats);
+});
+
 module.exports = {
   createUser,
   getUser,
@@ -51,4 +56,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUserCount,
+  getUserCountByRoles,
 };

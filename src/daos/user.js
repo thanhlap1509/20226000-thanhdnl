@@ -1,6 +1,6 @@
 const { userModel } = require("../models/user");
 const ObjectId = require("mongoose").Types.ObjectId;
-
+const { userRoles } = require("../models/user");
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
   return user;
@@ -38,6 +38,17 @@ const getUserCount = async () => {
   return await userModel.estimatedDocumentCount();
 };
 
+const getUserCountByRoles = async () => {
+  const counts = await Promise.all(
+    userRoles.map(async (role) => ({
+      role,
+      count: await userModel.countDocuments({ role }),
+    })),
+  );
+
+  return counts;
+};
+
 module.exports = {
   createUser,
   createUsers,
@@ -46,4 +57,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUserCount,
+  getUserCountByRoles,
 };
