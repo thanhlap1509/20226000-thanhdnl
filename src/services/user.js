@@ -11,12 +11,12 @@ const getUser = async (userId) => {
   return await userDaos.findUserById(userId);
 };
 
-const getAllUsers = async (sortCondition, limit, offset) => {
+const getAllUsers = async (sortCondition, limit, offset, filter) => {
   if (!sortCondition) {
-    return await userDaos.returnAllUsers(null, limit, offset);
+    return await userDaos.returnAllUsers(null, limit, offset, filter);
   }
   sortCondition = prepareSortCondition(sortCondition);
-  return await userDaos.returnAllUsers(sortCondition, limit, offset);
+  return await userDaos.returnAllUsers(sortCondition, limit, offset, filter);
 };
 
 const updateUser = async (userId, data) => {
@@ -48,7 +48,11 @@ const getUserAge = async (userId) => {
   }
 
   if (days < 0) {
-    const prevMonth = new Date(currentTime.getFullYear(), currentTime.getMonth(), 0);
+    const prevMonth = new Date(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
+      0,
+    );
     days += prevMonth.getDate();
     months -= 1;
   }

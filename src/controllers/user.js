@@ -8,11 +8,8 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const users = await userService.getAllUsers(
-    req.query.sort_by,
-    req.query.limit,
-    req.query.offset,
-  );
+  const { sort_by, limit, offset, ...filter } = req.query;
+  const users = await userService.getAllUsers(sort_by, limit, offset, filter);
   res.send(users);
 });
 

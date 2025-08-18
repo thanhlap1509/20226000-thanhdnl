@@ -1,7 +1,6 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
 const { Joi, validate } = require("express-validation");
 const { userRoles, userFields } = require("../models/user");
-const { query } = require("express");
 const createUser = Joi.object({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().trim().required(),
@@ -49,7 +48,13 @@ const getUsers = {
     ),
     limit: Joi.number().integer(),
     offset: Joi.number().integer(),
-  }),
+    email: Joi.string().email().trim().lowercase(),
+    password: Joi.string().trim(),
+    role: Joi.string()
+      .trim()
+      .valid(...userRoles),
+    domain: Joi.string().domain(),
+  }).without("email", "domain"),
 };
 
 const queryUserByRole = {
