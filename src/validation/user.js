@@ -1,6 +1,7 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
 const { Joi, validate } = require("express-validation");
 const { userRoles, userFields } = require("../models/user");
+const { query } = require("express");
 const createUser = Joi.object({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().trim().required(),
@@ -51,10 +52,20 @@ const getUsers = {
   }),
 };
 
+const queryUserByRole = {
+  params: Joi.object({
+    role: Joi.string()
+      .trim()
+      .required()
+      .valid(...userRoles),
+  }),
+};
+
 module.exports = {
   queryUserId: validate(queryUserId, { keyByField: true }),
   createUsers: validate(createUsers, { keyByField: true }),
   updateUser: validate(updateUser, { keyByField: true }),
   getNDomain: validate(getNDomain, { keyByField: true }),
   getUsers: validate(getUsers, { keyByField: true }),
+  queryUserByRole: validate(queryUserByRole, { keyByField: true }),
 };

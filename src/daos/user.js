@@ -1,7 +1,6 @@
 const { userModel } = require("../models/user");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { userRoles } = require("../models/user");
-const { binarySearch } = require("../utils");
 
 const addEmailDomain = (data) => {
   data.domain = data.email.split("@")[1];
@@ -67,9 +66,6 @@ const getUserCountByRoles = async () => {
 };
 
 const getUserCountByRole = async (role) => {
-  if (binarySearch(userRoles, role, (a, b) => a.localeCompare(b)) === -1) {
-    return null;
-  }
   return await {
     role,
     count: await userModel.countDocuments({ role }),

@@ -8,7 +8,11 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const users = await userService.getAllUsers(req.query.sort_by, req.query.limit, req.query.offset);
+  const users = await userService.getAllUsers(
+    req.query.sort_by,
+    req.query.limit,
+    req.query.offset,
+  );
   res.send(users);
 });
 
@@ -58,15 +62,9 @@ const getUserCountByRoles = catchAsync(async (req, res) => {
   res.send(userStats);
 });
 
-const getUserCountByRole = catchAsync(async (req, res, next) => {
+const getUserCountByRole = catchAsync(async (req, res) => {
   const userStats = await userService.getUserCountByRole(req.params.role);
-
-  if (userStats) {
-    return res.send(userStats);
-  } else {
-    console.log("none");
-    next();
-  }
+  return res.send(userStats);
 });
 
 const getUserCountByEmailDomains = catchAsync(async (req, res) => {
@@ -75,7 +73,9 @@ const getUserCountByEmailDomains = catchAsync(async (req, res) => {
 });
 
 const getUserCountByEmailDomain = catchAsync(async (req, res) => {
-  const userStats = await userService.getUserCountByEmailDomain(req.params.domain);
+  const userStats = await userService.getUserCountByEmailDomain(
+    req.params.domain,
+  );
   res.send(userStats);
 });
 

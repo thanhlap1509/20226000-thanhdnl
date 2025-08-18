@@ -20,7 +20,7 @@ router
   .put(updateUser, userController.updateUser)
   .delete(queryUserId, userController.deleteUser);
 
-router.route("/:userId/age").get(userController.getUserAge);
+router.route("/:userId/age").get(queryUserId, userController.getUserAge);
 
 router.use("/count", userCount);
 
