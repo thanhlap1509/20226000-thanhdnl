@@ -1,5 +1,5 @@
 const { ValidationError } = require("express-validation");
-const errorCode = require("../error");
+const { errorCode } = require("../error");
 
 const errorHandler = (err, req, res, next) => {
   console.log("-------------");
@@ -14,6 +14,7 @@ const errorHandler = (err, req, res, next) => {
   switch (statusCode) {
     case errorCode.BAD_REQUEST:
       message = "Bad request";
+      details = err.details;
       break;
     case errorCode.NOT_FOUND:
       message = `Resource not found ${req.url}`;
@@ -21,10 +22,12 @@ const errorHandler = (err, req, res, next) => {
       break;
     case errorCode.SERVER_ERROR:
       message = "Server error";
+      details = err.details;
       break;
     case errorCode.USER_EXIST:
       message = "This email is already register";
       returnCode = errorCode.BAD_REQUEST;
+      details = err.details;
       break;
     case errorCode.OUT_OF_MEM:
       message = "Atlas quota is full";
@@ -33,10 +36,12 @@ const errorHandler = (err, req, res, next) => {
       break;
     case errorCode.REQUEST_TOO_LARGE:
       message = "Request is too large";
+      details = err.details;
       break;
     default:
       message = "Don't know";
       returnCode = errorCode.OK;
+      details = err.details;
       break;
   }
   return res.status(returnCode).json({

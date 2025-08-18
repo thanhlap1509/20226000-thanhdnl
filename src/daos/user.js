@@ -85,6 +85,19 @@ const getUserCountByEmailDomains = async (order, count) => {
         count: { $sum: 1 },
       },
     },
+    {
+      $project: {
+        domain: "$_id",
+        _id: 0,
+        _count: "$count",
+      },
+    },
+    {
+      $project: {
+        domain: "$domain",
+        count: "$_count",
+      },
+    },
   ];
 
   if (order) {
