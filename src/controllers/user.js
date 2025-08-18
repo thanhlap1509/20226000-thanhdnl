@@ -39,6 +39,15 @@ const deleteUser = catchAsync(async (req, res, next) => {
   }
 });
 
+const getUserAge = catchAsync(async (req, res, next) => {
+  const user = await userService.getUserAge(req.params.userId);
+  if (user) {
+    res.send(user);
+  } else {
+    next();
+  }
+});
+
 const getUserCount = catchAsync(async (req, res) => {
   const userCount = await userService.getUserCount();
   res.send({ userCount });
@@ -91,4 +100,5 @@ module.exports = {
   getUserCountByEmailDomain,
   getLastNEmailDomains,
   getTopNEmailDomains,
+  getUserAge,
 };

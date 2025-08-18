@@ -49,6 +49,10 @@ const deleteUser = async (userId) => {
   return await userModel.findByIdAndDelete(userId);
 };
 
+const getUserCreatedTime = async (userId) => {
+  return await userModel.findOne({ _id: userId }, { createdAt: 1, _id: 0 });
+};
+
 const getUserCount = async () => {
   return await userModel.estimatedDocumentCount();
 };
@@ -112,4 +116,5 @@ module.exports = {
   getUserCountByRole,
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
+  getUserCreatedTime,
 };

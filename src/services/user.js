@@ -27,6 +27,40 @@ const deleteUser = async (userId) => {
   return await userDaos.deleteUser(userId);
 };
 
+const getUserAge = async (userId) => {
+  const createdTime = (await userDaos.getUserCreatedTime(userId)).createdAt;
+  const currentTime = new Date();
+
+  let years = currentTime.getFullYear() - createdTime.getFullYear();
+  let months = currentTime.getMonth() - createdTime.getMonth();
+  let days = currentTime.getDate() - createdTime.getDate();
+  let hours = currentTime.getHours() - createdTime.getHours();
+  let minutes = currentTime.getMinutes() - createdTime.getMinutes();
+
+  if (minutes < 0) {
+    minutes += 60;
+    hours -= 1;
+  }
+
+  if (hours < 0) {
+    hours += 24;
+    days -= 1;
+  }
+
+  if (days < 0) {
+    const prevMonth = new Date(currentTime.getFullYear(), currentTime.getMonth(), 0);
+    days += prevMonth.getDate();
+    months -= 1;
+  }
+
+  if (months < 0) {
+    months += 12;
+    years -= 1;
+  }
+
+  return { currentTime, createdTime, years, months, days, hours, minutes };
+};
+
 const getUserCount = async () => {
   return await userDaos.getUserCount();
 };
@@ -58,4 +92,5 @@ module.exports = {
   getUserCountByRole,
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
+  getUserAge,
 };

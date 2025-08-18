@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.index({ role: 1 });
-userSchema.index({ domain: 1 });
+//userSchema.index({ domain: 1 });
 
 const userFields = Object.keys(userSchema.paths);
 
