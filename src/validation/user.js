@@ -33,8 +33,15 @@ const updateUser = {
     .with("domain", "email"),
 };
 
+const getNDomain = {
+  params: Joi.object({
+    n: Joi.number().integer().required(),
+  }),
+};
+
 module.exports = {
   queryUserId: validate(queryUserId, { keyByField: true }),
   createUsers: validate(createUsers, { keyByField: true }),
   updateUser: validate(updateUser, { keyByField: true }),
+  getNDomain: validate(getNDomain, { keyByField: true }),
 };

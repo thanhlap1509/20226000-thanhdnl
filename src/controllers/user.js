@@ -70,6 +70,14 @@ const getUserCountByEmailDomain = catchAsync(async (req, res) => {
   res.send(userStats);
 });
 
+const getTopNEmailDomains = catchAsync(async (req, res) => {
+  res.send(await userService.getUserCountByEmailDomains("des", req.params.n));
+});
+
+const getLastNEmailDomains = catchAsync(async (req, res) => {
+  res.send(await userService.getUserCountByEmailDomains("asc", req.params.n));
+});
+
 module.exports = {
   createUser,
   getUser,
@@ -81,4 +89,6 @@ module.exports = {
   getUserCountByRole,
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
+  getLastNEmailDomains,
+  getTopNEmailDomains,
 };

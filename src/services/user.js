@@ -39,8 +39,8 @@ const getUserCountByRole = async (role) => {
   return await userDaos.getUserCountByRole(role);
 };
 
-const getUserCountByEmailDomains = async () => {
-  return await userDaos.getUserCountByEmailDomains();
+const getUserCountByEmailDomains = async (sortOrder, count) => {
+  return await userDaos.getUserCountByEmailDomains(sortOrder, count);
 };
 
 const getUserCountByEmailDomain = async (domain) => {

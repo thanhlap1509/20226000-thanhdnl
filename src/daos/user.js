@@ -72,15 +72,25 @@ const getUserCountByRole = async (role) => {
   };
 };
 
-const getUserCountByEmailDomains = async () => {
-  return await userModel.aggregate([
+const getUserCountByEmailDomains = async (order, count) => {
+  const docCount = Number(count);
+  const pipeline = [
     {
       $group: {
         _id: "$domain",
         count: { $sum: 1 },
       },
     },
-  ]);
+  ];
+
+  if (order) {
+    pipeline.push({ $sort: { count: order === "asc" ? 1 : -1 } });
+  }
+  if (docCount) {
+    pipeline.push({ $limit: docCount });
+  }
+
+  return await userModel.aggregate(pipeline);
 };
 
 const getUserCountByEmailDomain = async (domain) => {
