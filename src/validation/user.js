@@ -2,26 +2,36 @@
 const { Joi, validate } = require("express-validation");
 const { userFields } = require("../models/user");
 const { USER_ROLES } = require("../constants/user");
+
+const userTemplate = {
+  email: Joi.string().email().trim().lowercase(),
+  password: Joi.string().trim(),
+  role: Joi.string()
+    .trim()
+    .valid(...USER_ROLES),
+};
+
+const userJoiObject = Joi.object({
+  email: userTemplate.email.required(),
+  password: userTemplate.password.required(),
+  role: userTemplate.role.required(),
+});
+
+const userId = Joi.string().trim();
+
 const createUser = {
-  body: Joi.object({
-    email: Joi.string().email().trim().lowercase().required(),
-    password: Joi.string().trim().required(),
-    role: Joi.string()
-      .trim()
-      .required()
-      .valid(...USER_ROLES),
-  }),
+  body: userJoiObject.required(),
 };
 
 const queryUserId = {
   params: Joi.object({
-    userId: Joi.string().trim().required(),
-  }).required(),
+    userId: userId.required(),
+  }),
 };
 
 const updateUser = {
-  params: queryUserId.params,
-  body: createUser.body
+  params: Joi.object({ userId: userId.required() }),
+  body: userJoiObject
     .fork(["email", "password", "role"], (schema) => schema.optional())
     .or("email", "password", "role"),
 };
@@ -32,28 +42,24 @@ const getNDomain = {
   }),
 };
 
+const matchUserFieldRegex = `(?:${userFields.join("|")})`;
 const getUsers = {
   query: Joi.object({
     sort_by: Joi.string().pattern(
       new RegExp(
-        `^([+-](?:${userFields.join("|")})(,[+-](?:${userFields.join("|")}))*)?$`,
+        `^([+-]${matchUserFieldRegex}(,[+-]${matchUserFieldRegex})*)?$`,
       ),
     ),
     limit: Joi.number().integer(),
     offset: Joi.number().integer(),
-    email: Joi.string().email().trim().lowercase(),
-    role: Joi.string()
-      .trim()
-      .valid(...USER_ROLES),
+    email: userTemplate.email.optional(),
+    role: userTemplate.role.optional(),
   }),
 };
 
 const queryUserByRole = {
   params: Joi.object({
-    role: Joi.string()
-      .trim()
-      .required()
-      .valid(...USER_ROLES),
+    role: userTemplate.role.optional(),
   }),
 };
 

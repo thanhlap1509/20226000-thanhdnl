@@ -30,7 +30,7 @@ const errorHandler = (err, req, res, next) => {
       details = err.details;
       break;
     case errorCode.OUT_OF_MEM:
-      message = "Atlas quota is full";
+      message = "Error from Atlas";
       returnCode = errorCode.SERVER_ERROR;
       details = err.errorResponse.errmsg;
       break;

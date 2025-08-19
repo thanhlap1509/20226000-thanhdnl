@@ -8,9 +8,6 @@ const createUser = async (userData) => {
 };
 
 const createUsers = async (usersData) => {
-  usersData = usersData.map((data) => {
-    return data;
-  });
   return await userModel.insertMany(usersData, { ordered: false });
 };
 
@@ -54,20 +51,15 @@ const getUserCount = async () => {
   return await userModel.estimatedDocumentCount();
 };
 
-const getUserCountByRoles = async () => {
-  return await Promise.all(
-    USER_ROLES.map(async (role) => ({
-      role,
-      count: await userModel.countDocuments({ role }),
-    })),
-  );
-};
-
 const getUserCountByRole = async (role) => {
   return await {
     role,
     count: await userModel.countDocuments({ role }),
   };
+};
+
+const getUserCountByRoles = async () => {
+  return await Promise.all(USER_ROLES.map(getUserCountByRole));
 };
 
 const getUserCountByEmailDomains = async (order, count) => {
