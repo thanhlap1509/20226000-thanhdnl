@@ -15,7 +15,7 @@ const findUserById = async (userId) => {
 };
 
 const returnAllUsers = async (sortCondition, limit, offset, filter) => {
-  if (!sortCondition) {
+  if (sortCondition) {
     return await userModel.find(filter).skip(offset).limit(limit);
   }
   return await userModel

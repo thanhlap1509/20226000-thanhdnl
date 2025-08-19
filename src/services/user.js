@@ -30,12 +30,12 @@ const getUser = async (userId) => {
   return user;
 };
 
-const getAllUsers = async (sortCondition, limit, offset, filter) => {
-  if (!sortCondition) {
-    return await userDaos.returnAllUsers(null, limit, offset, filter);
+const getAllUsers = async ({ sort_by, limit, offset, ...filter }) => {
+  if (sort_by) {
+    sort_by = prepareSortCondition(sort_by);
+    return await userDaos.returnAllUsers(sort_by, limit, offset, filter);
   }
-  sortCondition = prepareSortCondition(sortCondition);
-  return await userDaos.returnAllUsers(sortCondition, limit, offset, filter);
+  return await userDaos.returnAllUsers(null, limit, offset, filter);
 };
 
 const updateUser = async (userId, data) => {

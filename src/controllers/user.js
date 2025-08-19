@@ -8,8 +8,7 @@ const createUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const { sort_by, limit, offset, ...filter } = req.query;
-  const users = await userService.getAllUsers(sort_by, limit, offset, filter);
+  const users = await userService.getAllUsers(req.query);
   res.send(users);
 };
 
@@ -84,8 +83,12 @@ const exportFuncs = {
   getUserAge,
 };
 
-for (const [fnName, fn] of Object.entries(exportFuncs)) {
+// for (const [fnName, fn] of Object.entries(exportFuncs)) {
+//   exportFuncs[fnName] = catchAsync(fn);
+// }
+
+Object.entries(exportFuncs).forEach(([fnName, fn]) => {
   exportFuncs[fnName] = catchAsync(fn);
-}
+});
 
 module.exports = exportFuncs;

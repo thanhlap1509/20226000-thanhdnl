@@ -11,12 +11,12 @@ const prepareSortCondition = (condition) => {
     field = fields[idx];
     fieldName = field.substring(1);
     sortOrder = field[0];
-    if (!filterObj[fieldName]) {
-      filterObj[fieldName] = sortOrder.localeCompare("+") === 0 ? 1 : -1;
-    } else {
+    if (filterObj[fieldName]) {
       const error = new CustomError(errorCode.BAD_REQUEST);
       error.details = `Duplicate field ${fieldName}`;
       throw error;
+    } else {
+      filterObj[fieldName] = sortOrder.localeCompare("+") === 0 ? 1 : -1;
     }
   }
   return filterObj;

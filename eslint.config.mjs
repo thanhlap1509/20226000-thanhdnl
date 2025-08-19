@@ -8,17 +8,28 @@ export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: {
+      js,
       prettier: prettierPlugin, // add prettier plugin
     },
     extends: [
-      js.configs.recommended, // recommended JS rules
+      "js/recommended", // recommended JS rules
       prettierConfig, // turn off ESLint rules that conflict with Prettier
     ],
     languageOptions: { globals: globals.browser },
     rules: {
       semi: ["error", "always"],
+      "operator-linebreak": "warn",
+      eqeqeq: "error",
+      "dot-notation": "error",
       "prettier/prettier": "off",
-      "max-len": ["warn", { code: 100 }],
+      "no-var": "error",
+      "prefer-const": "error",
+      "no-new-object": "warn",
+      "default-param-last": "error",
+      "no-iterator": "error",
+      "no-restricted-syntax": "error",
+      "arrow-parens": "warn",
+      "max-len": ["warn", { code: 80 }],
     },
   },
   {
@@ -31,6 +42,7 @@ export default defineConfig([
     rules: {
       semi: ["error", "always"],
       "prettier/prettier": "off",
+      "no-var": "error",
       "max-len": ["warn", { code: 80 }],
       "no-unused-vars": "off",
     },
