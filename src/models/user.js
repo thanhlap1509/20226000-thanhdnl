@@ -14,9 +14,6 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    domain: {
-      type: String,
-    },
     password: {
       type: String,
       required: true,
@@ -26,14 +23,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      enum: ["admin", "user"],
+      enum: userRoles,
     },
   },
   { versionKey: false, timestamps: { createdAt: true, updatedAt: false } },
 );
-
-userSchema.index({ role: 1 });
-//userSchema.index({ domain: 1 });
 
 const userFields = Object.keys(userSchema.paths);
 

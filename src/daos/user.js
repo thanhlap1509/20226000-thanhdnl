@@ -2,20 +2,13 @@ const { userModel } = require("../models/user");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { userRoles } = require("../models/user");
 
-const addEmailDomain = (data) => {
-  data.domain = data.email.split("@")[1];
-  return data;
-};
-
 const createUser = async (userData) => {
-  userData = addEmailDomain(userData);
   const user = await userModel.insertOne(userData);
   return user;
 };
 
 const createUsers = async (usersData) => {
   usersData = usersData.map((data) => {
-    data = addEmailDomain(data);
     return data;
   });
   return await userModel.insertMany(usersData, { ordered: false });
@@ -40,20 +33,21 @@ const returnAllUsers = async (sortCondition, limit, offset, filter) => {
 };
 
 const updateUser = async (userId, userData) => {
-  if (userData.email) {
-    userData = addEmailDomain(userData);
-  }
   return await userModel.findByIdAndUpdate(userId, userData, {
+    // cân nhắc đổi sang updateOne
     new: true,
   });
 };
 
 const deleteUser = async (userId) => {
-  return await userModel.findByIdAndDelete(userId);
+  return await userModel.findByIdAndDelete(userId); // tương tự updateUser
 };
 
+//TODO: Tìm hiểu lean()
 const getUserCreatedTime = async (userId) => {
-  return await userModel.findOne({ _id: userId }, { createdAt: 1, _id: 0 });
+  return await userModel
+    .findOne({ _id: userId }, { createdAt: 1, _id: 0 })
+    .lean(); // lean để format lại dữ liệu
 };
 
 const getUserCount = async () => {
@@ -79,6 +73,12 @@ const getUserCountByRole = async (role) => {
 const getUserCountByEmailDomains = async (order, count) => {
   const docCount = Number(count);
   const pipeline = [
+    {
+      $project: {
+        domain: { $arrayElemAt: [{ $split: ["$email", "@"] }, 1] },
+        _id: 0,
+      },
+    },
     {
       $group: {
         _id: "$domain",
@@ -113,7 +113,9 @@ const getUserCountByEmailDomains = async (order, count) => {
 const getUserCountByEmailDomain = async (domain) => {
   return await {
     domain,
-    count: await userModel.countDocuments({ domain }),
+    count: await userModel.countDocuments({
+      email: new RegExp(`@${domain}$`, "i"),
+    }),
   };
 };
 

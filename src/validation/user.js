@@ -29,8 +29,7 @@ const updateUser = {
   params: queryUserId.params,
   body: createUser
     .fork(["email", "password", "role"], (schema) => schema.optional())
-    .or("email", "password", "role")
-    .with("domain", "email"),
+    .or("email", "password", "role"),
 };
 
 const getNDomain = {
@@ -49,12 +48,10 @@ const getUsers = {
     limit: Joi.number().integer(),
     offset: Joi.number().integer(),
     email: Joi.string().email().trim().lowercase(),
-    password: Joi.string().trim(),
     role: Joi.string()
       .trim()
       .valid(...userRoles),
-    domain: Joi.string().domain(),
-  }).without("email", "domain"),
+  }),
 };
 
 const queryUserByRole = {
