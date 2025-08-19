@@ -19,10 +19,8 @@ const performUserIdQuery = async (userId, queryFunc, otherData) => {
 };
 
 const createUser = async (data) => {
-  if (Array.isArray(data)) {
-    return await userDaos.createUsers(data);
-  }
-  return await userDaos.createUser(data);
+  const user = await userDaos.createUser(data);
+  return user;
 };
 
 const getUser = async (userId) => {
@@ -33,9 +31,11 @@ const getUser = async (userId) => {
 const getAllUsers = async ({ sort_by, limit, offset, ...filter }) => {
   if (sort_by) {
     sort_by = prepareSortCondition(sort_by);
-    return await userDaos.returnAllUsers(sort_by, limit, offset, filter);
+    const users = await userDaos.returnAllUsers(sort_by, limit, offset, filter);
+    return users;
   }
-  return await userDaos.returnAllUsers(null, limit, offset, filter);
+  const users = await userDaos.returnAllUsers(null, limit, offset, filter);
+  return users;
 };
 
 const updateUser = async (userId, data) => {
@@ -89,23 +89,28 @@ const getUserAge = async (userId) => {
 };
 
 const getUserCount = async () => {
-  return await userDaos.getUserCount();
+  const userCount = await userDaos.getUserCount();
+  return userCount;
 };
 
 const getUserCountByRoles = async () => {
-  return await userDaos.getUserCountByRoles();
+  const userStats = await userDaos.getUserCountByRoles();
+  return userStats;
 };
 
 const getUserCountByRole = async (role) => {
-  return await userDaos.getUserCountByRole(role);
+  const userStats = await userDaos.getUserCountByRole(role);
+  return userStats;
 };
 
 const getUserCountByEmailDomains = async (sortOrder, count) => {
-  return await userDaos.getUserCountByEmailDomains(sortOrder, count);
+  const userStats = await userDaos.getUserCountByEmailDomains(sortOrder, count);
+  return userStats;
 };
 
 const getUserCountByEmailDomain = async (domain) => {
-  return await userDaos.getUserCountByEmailDomain(domain);
+  const userStats = await userDaos.getUserCountByEmailDomain(domain);
+  return userStats;
 };
 
 module.exports = {

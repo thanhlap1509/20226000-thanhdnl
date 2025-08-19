@@ -6,56 +6,61 @@ const createUser = async (userData) => {
   return user;
 };
 
-const createUsers = async (usersData) => {
-  return await userModel.insertMany(usersData, { ordered: false });
-};
-
 const findUserById = async (userId) => {
-  return await userModel.findById(userId);
+  const user = await userModel.findById(userId);
+  return user;
 };
 
 const returnAllUsers = async (sortCondition, limit, offset, filter) => {
   if (sortCondition) {
-    return await userModel.find(filter).skip(offset).limit(limit);
+    const user = await userModel.find(filter).skip(offset).limit(limit);
+    return user;
   }
-  return await userModel
+  const user = await userModel
     .find(filter)
     .sort(sortCondition)
     .skip(offset)
     .limit(limit);
+  return user;
 };
 
 const updateUser = async (userId, userData) => {
-  return await userModel.findByIdAndUpdate(userId, userData, {
+  const user = await userModel.findByIdAndUpdate(userId, userData, {
     // cân nhắc đổi sang updateOne
     new: true,
   });
+  return user;
 };
 
 const deleteUser = async (userId) => {
-  return await userModel.findByIdAndDelete(userId); // tương tự updateUser
+  const user = await userModel.findByIdAndDelete(userId); // tương tự updateUser
+  return user;
 };
 
 //TODO: Tìm hiểu lean()
 const getUserCreatedTime = async (userId) => {
-  return await userModel
+  const user = await userModel
     .findOne({ _id: userId }, { createdAt: 1, _id: 0 })
     .lean(); // lean để format lại dữ liệu
+  return user;
 };
 
 const getUserCount = async () => {
-  return await userModel.estimatedDocumentCount();
+  const user = await userModel.estimatedDocumentCount();
+  return user;
 };
 
 const getUserCountByRole = async (role) => {
-  return await {
+  const user = await {
     role,
     count: await userModel.countDocuments({ role }),
   };
+  return user;
 };
 
 const getUserCountByRoles = async () => {
-  return await Promise.all(USER_ROLES.map(getUserCountByRole));
+  const user = await Promise.all(USER_ROLES.map(getUserCountByRole));
+  return user;
 };
 
 const getUserCountByEmailDomains = async (order, count) => {
@@ -95,21 +100,22 @@ const getUserCountByEmailDomains = async (order, count) => {
     pipeline.push({ $limit: docCount });
   }
 
-  return await userModel.aggregate(pipeline);
+  const user = await userModel.aggregate(pipeline);
+  return user;
 };
 
 const getUserCountByEmailDomain = async (domain) => {
-  return await {
+  const user = await {
     domain,
     count: await userModel.countDocuments({
       email: new RegExp(`@${domain}$`, "i"),
     }),
   };
+  return user;
 };
 
 module.exports = {
   createUser,
-  createUsers,
   findUserById,
   returnAllUsers,
   updateUser,

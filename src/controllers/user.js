@@ -28,8 +28,8 @@ const deleteUser = async (req, res) => {
 };
 
 const getUserAge = async (req, res) => {
-  const user = await userService.getUserAge(req.params.userId);
-  res.send(user);
+  const userAge = await userService.getUserAge(req.params.userId);
+  res.send(userAge);
 };
 
 const getUserCount = async (req, res) => {
@@ -60,11 +60,19 @@ const getUserCountByEmailDomain = async (req, res) => {
 };
 
 const getTopNEmailDomains = async (req, res) => {
-  res.send(await userService.getUserCountByEmailDomains("des", req.params.n));
+  const userStats = await userService.getUserCountByEmailDomains(
+    "des",
+    req.params.n,
+  );
+  res.send(userStats);
 };
 
 const getLastNEmailDomains = async (req, res) => {
-  res.send(await userService.getUserCountByEmailDomains("asc", req.params.n));
+  const userStats = await userService.getUserCountByEmailDomains(
+    "asc",
+    req.params.n,
+  );
+  res.send(userStats);
 };
 
 const exportFuncs = {
