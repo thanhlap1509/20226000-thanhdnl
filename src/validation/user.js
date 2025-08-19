@@ -2,22 +2,15 @@
 const { Joi, validate } = require("express-validation");
 const { userFields } = require("../models/user");
 const { USER_ROLES } = require("../constants/user");
-const createUser = Joi.object({
-  email: Joi.string().email().trim().lowercase().required(),
-  password: Joi.string().trim().required(),
-  role: Joi.string()
-    .trim()
-    .required()
-    .valid(...USER_ROLES),
-});
-
-const createUsers = {
-  body: Joi.alternatives()
-    .try(
-      createUser, // single object
-      Joi.array().items(createUser), // array of objects
-    )
-    .required(),
+const createUser = {
+  body: Joi.object({
+    email: Joi.string().email().trim().lowercase().required(),
+    password: Joi.string().trim().required(),
+    role: Joi.string()
+      .trim()
+      .required()
+      .valid(...USER_ROLES),
+  }),
 };
 
 const queryUserId = {
@@ -28,7 +21,7 @@ const queryUserId = {
 
 const updateUser = {
   params: queryUserId.params,
-  body: createUser
+  body: createUser.body
     .fork(["email", "password", "role"], (schema) => schema.optional())
     .or("email", "password", "role"),
 };
@@ -66,7 +59,7 @@ const queryUserByRole = {
 
 module.exports = {
   queryUserId: validate(queryUserId, { keyByField: true }),
-  createUsers: validate(createUsers, { keyByField: true }),
+  createUser: validate(createUser, { keyByField: true }),
   updateUser: validate(updateUser, { keyByField: true }),
   getNDomain: validate(getNDomain, { keyByField: true }),
   getUsers: validate(getUsers, { keyByField: true }),

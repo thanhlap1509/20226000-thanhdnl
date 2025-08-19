@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getUsers,
-  createUsers,
+  createUser,
   queryUserId,
   updateUser,
 } = require("../validation");
@@ -12,7 +12,7 @@ const userController = require("../controllers");
 router
   .route("/")
   .get(getUsers, userController.getAllUsers)
-  .post(createUsers, userController.createUser);
+  .post(createUser, userController.createUser);
 
 router
   .route("/:userId")
