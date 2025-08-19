@@ -1,5 +1,23 @@
 const userDaos = require("../daos");
 const { prepareSortCondition } = require("../utils");
+const ObjectId = require("mongoose").Types.ObjectId;
+const { CustomError, errorCode } = require("../error");
+
+const performUserIdQuery = async (userId, queryFunc, otherData) => {
+  if (ObjectId.isValid(userId)) {
+    const res = await queryFunc(userId, otherData);
+    if (res) {
+      return res;
+    }
+    const error = new CustomError(errorCode.NOT_FOUND);
+    error.details = "User not found";
+    throw error;
+  }
+  const error = new CustomError(errorCode.BAD_REQUEST);
+  error.details = "Invalid userId";
+  throw error;
+};
+
 const createUser = async (data) => {
   if (Array.isArray(data)) {
     return await userDaos.createUsers(data);
@@ -8,7 +26,8 @@ const createUser = async (data) => {
 };
 
 const getUser = async (userId) => {
-  return await userDaos.findUserById(userId);
+  const user = await performUserIdQuery(userId, userDaos.findUserById);
+  return user;
 };
 
 const getAllUsers = async (sortCondition, limit, offset, filter) => {
@@ -20,15 +39,19 @@ const getAllUsers = async (sortCondition, limit, offset, filter) => {
 };
 
 const updateUser = async (userId, data) => {
-  return await userDaos.updateUser(userId, data);
+  const user = await performUserIdQuery(userId, userDaos.updateUser, data);
+  return user;
 };
 
 const deleteUser = async (userId) => {
-  return await userDaos.deleteUser(userId);
+  const user = performUserIdQuery(userId, userDaos.deleteUser);
+  return user;
 };
 
 const getUserAge = async (userId) => {
-  const createdTime = (await userDaos.getUserCreatedTime(userId)).createdAt;
+  const createdTime = (
+    await performUserIdQuery(userId, userDaos.getUserCreatedTime)
+  ).createdAt;
   const currentTime = new Date();
 
   let years = currentTime.getFullYear() - createdTime.getFullYear();

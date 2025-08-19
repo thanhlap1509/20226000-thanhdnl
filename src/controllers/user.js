@@ -13,40 +13,24 @@ const getAllUsers = async (req, res) => {
   res.send(users);
 };
 
-const getUser = async (req, res, next) => {
+const getUser = async (req, res) => {
   const user = await userService.getUser(req.params.userId);
-  if (user) {
-    res.send(user);
-  } else {
-    next();
-  }
+  res.send(user);
 };
 
-const updateUser = async (req, res, next) => {
-  const user = await userService.updateUser(req.params.userId, req.body);
-  if (user) {
-    res.send(user);
-  } else {
-    next();
-  }
+const updateUser = async (req, res) => {
+  await userService.updateUser(req.params.userId, req.body);
+  res.send({ userFound: 1, userUpdated: 1 });
 };
 
-const deleteUser = async (req, res, next) => {
-  const user = await userService.deleteUser(req.params.userId);
-  if (user) {
-    res.status(StatusCodes.NO_CONTENT).send();
-  } else {
-    next();
-  }
+const deleteUser = async (req, res) => {
+  await userService.deleteUser(req.params.userId);
+  res.send({ userFound: 1, userDeleted: 1 });
 };
 
-const getUserAge = async (req, res, next) => {
+const getUserAge = async (req, res) => {
   const user = await userService.getUserAge(req.params.userId);
-  if (user) {
-    res.send(user);
-  } else {
-    next();
-  }
+  res.send(user);
 };
 
 const getUserCount = async (req, res) => {
