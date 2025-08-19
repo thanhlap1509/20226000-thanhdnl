@@ -1,13 +1,14 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
 const { Joi, validate } = require("express-validation");
-const { userRoles, userFields } = require("../models/user");
+const { userFields } = require("../models/user");
+const { USER_ROLES } = require("../constants/user");
 const createUser = Joi.object({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().trim().required(),
   role: Joi.string()
     .trim()
     .required()
-    .valid(...userRoles),
+    .valid(...USER_ROLES),
 });
 
 const createUsers = {
@@ -50,7 +51,7 @@ const getUsers = {
     email: Joi.string().email().trim().lowercase(),
     role: Joi.string()
       .trim()
-      .valid(...userRoles),
+      .valid(...USER_ROLES),
   }),
 };
 
@@ -59,7 +60,7 @@ const queryUserByRole = {
     role: Joi.string()
       .trim()
       .required()
-      .valid(...userRoles),
+      .valid(...USER_ROLES),
   }),
 };
 

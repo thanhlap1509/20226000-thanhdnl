@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const userRoles = ["admin", "user"];
+const { USER_ROLES } = require("../constants/user");
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      enum: userRoles,
+      enum: USER_ROLES,
     },
   },
   { versionKey: false, timestamps: { createdAt: true, updatedAt: false } },
@@ -33,4 +33,3 @@ const userFields = Object.keys(userSchema.paths);
 
 module.exports.userModel = mongoose.model("User", userSchema);
 module.exports.userFields = userFields.sort();
-module.exports.userRoles = userRoles;
