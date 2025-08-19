@@ -1,5 +1,5 @@
 const { ValidationError } = require("express-validation");
-const { errorCode } = require("../error");
+const errorCode = require("../error/code");
 
 const errorHandler = (err, req, res, next) => {
   console.log("-------------");

@@ -7,22 +7,14 @@ const {
   updateUser,
   getNDomain,
   queryUserByRole,
-} = require("../validation");
+} = require("../validation/user");
 
-const userController = require("../controllers");
+const userController = require("../controllers/user");
 
 router
   .route("/")
   .get(getUsers, userController.getAllUsers)
   .post(createUser, userController.createUser);
-
-router
-  .route("/:userId")
-  .get(queryUserId, userController.getUser)
-  .put(updateUser, userController.updateUser)
-  .delete(queryUserId, userController.deleteUser);
-
-router.route("/:userId/age").get(queryUserId, userController.getUserAge);
 
 router.route("/count").get(userController.getUserCount);
 
@@ -45,5 +37,13 @@ router
 router
   .route("/count/domain/bot/:n")
   .get(getNDomain, userController.getLastNEmailDomains);
+
+router
+  .route("/:userId")
+  .get(queryUserId, userController.getUser)
+  .put(updateUser, userController.updateUser)
+  .delete(queryUserId, userController.deleteUser);
+
+router.route("/:userId/age").get(queryUserId, userController.getUserAge);
 
 module.exports = router;

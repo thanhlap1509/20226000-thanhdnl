@@ -1,7 +1,8 @@
-const userDaos = require("../daos");
-const { prepareSortCondition } = require("../utils");
+const userDaos = require("../daos/user");
+const prepareSortCondition = require("../utils/prepareSortCondition");
 const ObjectId = require("mongoose").Types.ObjectId;
-const { CustomError, errorCode } = require("../error");
+const errorCode = require("../error/code");
+const CustomError = require("../error/customError");
 const { USER_ROLES } = require("../constants/user");
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {

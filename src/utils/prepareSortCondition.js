@@ -1,5 +1,5 @@
-const { CustomError, errorCode } = require("../error");
-
+const errorCode = require("../error/code");
+const CustomError = require("../error/customError");
 const prepareSortCondition = (condition) => {
   const fields = condition.split(",");
   const filterObj = {};
