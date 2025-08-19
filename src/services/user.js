@@ -2,6 +2,7 @@ const userDaos = require("../daos");
 const { prepareSortCondition } = require("../utils");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { CustomError, errorCode } = require("../error");
+const { USER_ROLES } = require("../constants/user");
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
   if (ObjectId.isValid(userId)) {
@@ -93,14 +94,23 @@ const getUserCount = async () => {
   return userCount;
 };
 
-const getUserCountByRoles = async () => {
-  const userStats = await userDaos.getUserCountByRoles();
-  return userStats;
+const getUserCountByRole = async (role) => {
+  const count = await userDaos.getUserCountByRole(role);
+  const roleCount = {
+    role,
+    count,
+  };
+  return roleCount;
 };
 
-const getUserCountByRole = async (role) => {
-  const userStats = await userDaos.getUserCountByRole(role);
-  return userStats;
+const getUserCountByRoles = async () => {
+  const roleCounts = await Promise.all(
+    USER_ROLES.map(async (role) => {
+      const roleCount = await getUserCountByRole(role);
+      return roleCount;
+    }),
+  );
+  return roleCounts;
 };
 
 const getUserCountByEmailDomains = async (sortOrder, count) => {

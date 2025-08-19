@@ -1,5 +1,4 @@
 const { userModel } = require("../models/user");
-const { USER_ROLES } = require("../constants/user");
 
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
@@ -13,14 +12,14 @@ const findUserById = async (userId) => {
 
 const returnAllUsers = async (sortCondition, limit, offset, filter) => {
   if (sortCondition) {
-    const user = await userModel.find(filter).skip(offset).limit(limit);
+    const user = await userModel
+      .find(filter)
+      .sort(sortCondition)
+      .skip(offset)
+      .limit(limit);
     return user;
   }
-  const user = await userModel
-    .find(filter)
-    .sort(sortCondition)
-    .skip(offset)
-    .limit(limit);
+  const user = await userModel.find(filter).skip(offset).limit(limit);
   return user;
 };
 
@@ -51,16 +50,8 @@ const getUserCount = async () => {
 };
 
 const getUserCountByRole = async (role) => {
-  const user = await {
-    role,
-    count: await userModel.countDocuments({ role }),
-  };
-  return user;
-};
-
-const getUserCountByRoles = async () => {
-  const user = await Promise.all(USER_ROLES.map(getUserCountByRole));
-  return user;
+  const count = await userModel.countDocuments({ role });
+  return count;
 };
 
 const getUserCountByEmailDomains = async (order, count) => {
@@ -121,7 +112,6 @@ module.exports = {
   updateUser,
   deleteUser,
   getUserCount,
-  getUserCountByRoles,
   getUserCountByRole,
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
