@@ -6,7 +6,7 @@ const createUser = async (userData) => {
 };
 
 const findUserById = async (userId) => {
-  const user = await userModel.findById(userId);
+  const user = await userModel.findById(userId).lean();
   return user;
 };
 
@@ -16,31 +16,28 @@ const returnAllUsers = async (sortCondition, limit, offset, filter) => {
       .find(filter)
       .sort(sortCondition)
       .skip(offset)
-      .limit(limit);
+      .limit(limit)
+      .lean();
     return user;
   }
-  const user = await userModel.find(filter).skip(offset).limit(limit);
+  const user = await userModel.find(filter).skip(offset).limit(limit).lean();
   return user;
 };
 
 const updateUser = async (userId, userData) => {
-  const user = await userModel.findByIdAndUpdate(userId, userData, {
-    // cân nhắc đổi sang updateOne
-    new: true,
-  });
-  return user;
+  const result = await userModel.updateOne(userId, userData);
+  return result;
 };
 
 const deleteUser = async (userId) => {
-  const user = await userModel.findByIdAndDelete(userId); // tương tự updateUser
-  return user;
+  const result = await userModel.deleteOne(userId); // tương tự updateUser
+  return result;
 };
 
-//TODO: Tìm hiểu lean()
 const getUserCreatedTime = async (userId) => {
   const user = await userModel
     .findOne({ _id: userId }, { createdAt: 1, _id: 0 })
-    .lean(); // lean để format lại dữ liệu
+    .lean();
   return user;
 };
 
@@ -52,6 +49,26 @@ const getUserCount = async () => {
 const getUserCountByRole = async (role) => {
   const count = await userModel.countDocuments({ role });
   return count;
+};
+
+const getUserCountByRoles = async () => {
+  const counts = await userModel.aggregate([
+    { $group: { _id: "$role", count: { $sum: 1 } } },
+    {
+      $project: {
+        role: "$_id",
+        _id: 0,
+        _count: "$count",
+      },
+    },
+    {
+      $project: {
+        role: "$role",
+        count: "$_count",
+      },
+    },
+  ]);
+  return counts;
 };
 
 const getUserCountByEmailDomains = async (order, count) => {
@@ -113,6 +130,7 @@ module.exports = {
   deleteUser,
   getUserCount,
   getUserCountByRole,
+  getUserCountByRoles,
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
   getUserCreatedTime,

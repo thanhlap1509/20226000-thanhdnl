@@ -3,7 +3,6 @@ const prepareSortCondition = require("../utils/prepareSortCondition");
 const ObjectId = require("mongoose").Types.ObjectId;
 const errorCode = require("../error/code");
 const CustomError = require("../error/customError");
-const { USER_ROLES } = require("../constants/user");
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
   if (ObjectId.isValid(userId)) {
@@ -41,13 +40,13 @@ const getAllUsers = async ({ sort_by, limit, offset, ...filter }) => {
 };
 
 const updateUser = async (userId, data) => {
-  const user = await performUserIdQuery(userId, userDaos.updateUser, data);
-  return user;
+  const result = await performUserIdQuery(userId, userDaos.updateUser, data);
+  return result;
 };
 
 const deleteUser = async (userId) => {
-  const user = performUserIdQuery(userId, userDaos.deleteUser);
-  return user;
+  const result = performUserIdQuery(userId, userDaos.deleteUser);
+  return result;
 };
 
 const getUserAge = async (userId) => {
@@ -105,12 +104,7 @@ const getUserCountByRole = async (role) => {
 };
 
 const getUserCountByRoles = async () => {
-  const roleCounts = await Promise.all(
-    USER_ROLES.map(async (role) => {
-      const roleCount = await getUserCountByRole(role);
-      return roleCount;
-    }),
-  );
+  const roleCounts = await userDaos.getUserCountByRoles();
   return roleCounts;
 };
 

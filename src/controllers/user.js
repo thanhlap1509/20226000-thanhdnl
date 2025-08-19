@@ -18,13 +18,13 @@ const getUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  await userService.updateUser(req.params.userId, req.body);
-  res.send({ userFound: 1, userUpdated: 1 });
+  const result = await userService.updateUser(req.params.userId, req.body);
+  res.send(result);
 };
 
 const deleteUser = async (req, res) => {
-  await userService.deleteUser(req.params.userId);
-  res.send({ userFound: 1, userDeleted: 1 });
+  const result = await userService.deleteUser(req.params.userId);
+  res.send(result);
 };
 
 const getUserAge = async (req, res) => {
