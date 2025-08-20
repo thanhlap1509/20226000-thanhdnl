@@ -11,11 +11,23 @@ const findUserById = async (userId) => {
   return user;
 };
 
-const returnAllUsers = async (sortCondition, limit, offset, filter) => {
-  if (sortCondition) {
+const returnAllUsers = async ({
+  sort_by,
+  limit,
+  offset,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  const filter = { email, role };
+  if (start_date && end_date) {
+    filter.createdAt = { $gte: start_date, $lte: end_date };
+  }
+  if (sort_by) {
     const user = await userModel
       .find(filter, { password: 0 })
-      .sort(sortCondition)
+      .sort(sort_by)
       .skip(offset)
       .limit(limit)
       .lean();

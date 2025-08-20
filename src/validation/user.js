@@ -3,6 +3,29 @@ const { Joi, validate } = require("express-validation");
 const { userFields } = require("../models/user");
 const { USER_ROLES } = require("../constants/user");
 
+const dateValidation = Joi.date()
+  .iso()
+  .custom((value, helpers) => {
+    const valueString = helpers.original;
+    const valueStringLen = valueString.length;
+
+    const valueISOString = new Date(value).toISOString();
+
+    if (
+      valueString.localeCompare(valueISOString.substring(0, valueStringLen)) !==
+      0
+    ) {
+      return helpers.error("any.invalid");
+    }
+
+    return value;
+  });
+
+const timePeriodTemplate = {
+  start_date: dateValidation,
+  end_date: dateValidation.greater(Joi.ref("start_date")),
+};
+
 const userTemplate = {
   email: Joi.string().email().trim().lowercase(),
   password: Joi.string().trim(),
@@ -57,7 +80,11 @@ const getUsers = {
     offset: Joi.number().integer(),
     email: userTemplate.email.optional(),
     role: userTemplate.role.optional(),
-  }),
+    start_date: timePeriodTemplate.start_date.optional(),
+    end_date: timePeriodTemplate.end_date.optional(),
+  })
+    .with("start_date", "end_date")
+    .with("end_date", "start_date"),
 };
 
 const queryUserByRole = {
@@ -66,27 +93,10 @@ const queryUserByRole = {
   }),
 };
 
-const dateValidation = Joi.date()
-  .iso()
-  .custom((value, helpers) => {
-    const valueString = helpers.original;
-    const valueStringLen = valueString.length;
-
-    const valueISOString = new Date(value).toISOString();
-
-    if (
-      valueString.localeCompare(valueISOString.substring(0, valueStringLen)) !==
-      0
-    ) {
-      return helpers.error("any.invalid");
-    }
-
-    return value;
-  });
 const queryTimePeriod = {
   query: Joi.object({
-    start_date: dateValidation,
-    end_date: dateValidation.greater(Joi.ref("start_date")),
+    start_date: timePeriodTemplate.start_date,
+    end_date: timePeriodTemplate.end_date,
   })
     .with("start_date", "end_date")
     .with("end_date", "start_date"),

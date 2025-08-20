@@ -33,13 +33,38 @@ const getUser = async (userId) => {
   return user;
 };
 
-const getAllUsers = async ({ sort_by, limit, offset, ...filter }) => {
+const getAllUsers = async ({
+  sort_by,
+  limit,
+  offset,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  start_date = strToDate(start_date);
+  end_date = strToDate(end_date);
   if (sort_by) {
     sort_by = prepareSortCondition(sort_by);
-    const users = await userDaos.returnAllUsers(sort_by, limit, offset, filter);
+    const users = await userDaos.returnAllUsers({
+      sort_by,
+      limit,
+      offset,
+      email,
+      role,
+      start_date,
+      end_date,
+    });
     return users;
   }
-  const users = await userDaos.returnAllUsers(null, limit, offset, filter);
+  const users = await userDaos.returnAllUsers({
+    limit,
+    offset,
+    email,
+    role,
+    start_date,
+    end_date,
+  });
   return users;
 };
 
