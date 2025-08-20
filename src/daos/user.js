@@ -2,6 +2,7 @@ const { userModel } = require("../models/user");
 
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
+  // eslint-disable-next-line no-unused-vars
   const { password, ...returnData } = user.toObject();
   return returnData;
 };
@@ -11,7 +12,7 @@ const findUserById = async (userId) => {
   return user;
 };
 
-const returnAllUsers = async ({
+const returnUsers = async ({
   sort_by,
   limit,
   offset,
@@ -164,7 +165,7 @@ const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
 module.exports = {
   createUser,
   findUserById,
-  returnAllUsers,
+  returnUsers,
   updateUser,
   deleteUser,
   getUserCount,

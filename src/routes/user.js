@@ -14,8 +14,10 @@ const userController = require("../controllers/user");
 
 router
   .route("/")
-  .get(getUsers, userController.getAllUsers)
+  .get(getUsers, userController.getUsers)
   .post(createUser, userController.createUser);
+
+router.route("/export").get(getUsers, userController.getUsersAsCSV);
 
 router.route("/count").get(userController.getUserCount);
 

@@ -1,4 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
+const converter = require("json-2-csv");
 const userService = require("../services/user");
 const catchAsync = require("../utils/catchAsync");
 
@@ -7,14 +8,22 @@ const createUser = async (req, res) => {
   res.status(StatusCodes.CREATED).send(user);
 };
 
-const getAllUsers = async (req, res) => {
-  const users = await userService.getAllUsers(req.query);
+const getUsers = async (req, res) => {
+  const users = await userService.getUsers(req.query);
   res.send(users);
 };
 
 const getUser = async (req, res) => {
   const user = await userService.getUser(req.params.userId);
   res.send(user);
+};
+
+const getUsersAsCSV = async (req, res) => {
+  const users = await userService.getUsers(req.query);
+  const data = converter.json2csv(JSON.parse(JSON.stringify(users)));
+
+  res.attachment("result.csv");
+  res.status(200).send(data);
 };
 
 const updateUser = async (req, res) => {
@@ -83,11 +92,11 @@ const getLastNEmailDomains = async (req, res) => {
   );
   res.send(userStats);
 };
-
 const exportFuncs = {
   createUser,
   getUser,
-  getAllUsers,
+  getUsers,
+  getUsersAsCSV,
   updateUser,
   deleteUser,
   getUserCount,

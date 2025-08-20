@@ -33,7 +33,7 @@ const getUser = async (userId) => {
   return user;
 };
 
-const getAllUsers = async ({
+const getUsers = async ({
   sort_by,
   limit,
   offset,
@@ -46,7 +46,7 @@ const getAllUsers = async ({
   end_date = strToDate(end_date);
   if (sort_by) {
     sort_by = prepareSortCondition(sort_by);
-    const users = await userDaos.returnAllUsers({
+    const users = await userDaos.returnUsers({
       sort_by,
       limit,
       offset,
@@ -57,7 +57,7 @@ const getAllUsers = async ({
     });
     return users;
   }
-  const users = await userDaos.returnAllUsers({
+  const users = await userDaos.returnUsers({
     limit,
     offset,
     email,
@@ -167,7 +167,7 @@ module.exports = {
   createUser,
   updateUser,
   getUser,
-  getAllUsers,
+  getUsers,
   deleteUser,
   getUserCount,
   getUserCountByRoles,
