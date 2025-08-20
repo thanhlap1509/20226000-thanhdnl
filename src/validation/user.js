@@ -66,6 +66,32 @@ const queryUserByRole = {
   }),
 };
 
+const dateValidation = Joi.date()
+  .iso()
+  .custom((value, helpers) => {
+    const valueString = helpers.original;
+    const valueStringLen = valueString.length;
+
+    const valueISOString = new Date(value).toISOString();
+
+    if (
+      valueString.localeCompare(valueISOString.substring(0, valueStringLen)) !==
+      0
+    ) {
+      return helpers.error("any.invalid");
+    }
+
+    return value;
+  });
+const queryTimePeriod = {
+  query: Joi.object({
+    start_date: dateValidation,
+    end_date: dateValidation.greater(Joi.ref("start_date")),
+  })
+    .with("start_date", "end_date")
+    .with("end_date", "start_date"),
+};
+
 module.exports = {
   queryUserId: validate(queryUserId, { keyByField: true }),
   createUser: validate(createUser, { keyByField: true }),
@@ -73,4 +99,5 @@ module.exports = {
   getNDomain: validate(getNDomain, { keyByField: true }),
   getUsers: validate(getUsers, { keyByField: true }),
   queryUserByRole: validate(queryUserByRole, { keyByField: true }),
+  queryTimePeriod: validate(queryTimePeriod, { keyByField: true }),
 };

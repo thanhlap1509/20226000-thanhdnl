@@ -7,6 +7,7 @@ const {
   updateUser,
   getNDomain,
   queryUserByRole,
+  queryTimePeriod,
 } = require("../validation/user");
 
 const userController = require("../controllers/user");
@@ -24,19 +25,21 @@ router
   .route("/count/role/:role")
   .get(queryUserByRole, userController.getUserCountByRole);
 
-router.route("/count/domain/").get(userController.getUserCountByEmailDomains);
+router
+  .route("/count/domain/")
+  .get(queryTimePeriod, userController.getUserCountByEmailDomains);
 
 router
   .route("/count/domain/:domain")
-  .get(userController.getUserCountByEmailDomain);
+  .get(queryTimePeriod, userController.getUserCountByEmailDomain);
 
 router
   .route("/count/domain/top/:n")
-  .get(getNDomain, userController.getTopNEmailDomains);
+  .get(queryTimePeriod, getNDomain, userController.getTopNEmailDomains);
 
 router
   .route("/count/domain/bot/:n")
-  .get(getNDomain, userController.getLastNEmailDomains);
+  .get(queryTimePeriod, getNDomain, userController.getLastNEmailDomains);
 
 router
   .route("/:userId")
