@@ -73,7 +73,8 @@ const getUsers = {
   query: Joi.object({
     sort_by: Joi.string().pattern(
       new RegExp(
-        `^([+-]${matchUserFieldRegex}(,[+-]${matchUserFieldRegex})*)?$`,
+        // eslint-disable-next-line max-len
+        `^(${matchUserFieldRegex}\\.(asc|desc))(,${matchUserFieldRegex}\\.(asc|desc))*$`,
       ),
     ),
     limit: Joi.number().integer(),
