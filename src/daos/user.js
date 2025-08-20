@@ -2,25 +2,30 @@ const { userModel } = require("../models/user");
 
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
-  return user;
+  const { password, ...returnData } = user.toObject();
+  return returnData;
 };
 
 const findUserById = async (userId) => {
-  const user = await userModel.findById(userId).lean();
+  const user = await userModel.findById(userId, { password: 0 }).lean();
   return user;
 };
 
 const returnAllUsers = async (sortCondition, limit, offset, filter) => {
   if (sortCondition) {
     const user = await userModel
-      .find(filter)
+      .find(filter, { password: 0 })
       .sort(sortCondition)
       .skip(offset)
       .limit(limit)
       .lean();
     return user;
   }
-  const user = await userModel.find(filter).skip(offset).limit(limit).lean();
+  const user = await userModel
+    .find(filter, { password: 0 })
+    .skip(offset)
+    .limit(limit)
+    .lean();
   return user;
 };
 
