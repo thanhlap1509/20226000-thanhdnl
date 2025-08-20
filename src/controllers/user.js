@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const converter = require("json-2-csv");
 const userService = require("../services/user");
-const catchAsync = require("../utils/catchAsync");
 
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -108,13 +107,5 @@ const exportFuncs = {
   getTopNEmailDomains,
   getUserAge,
 };
-
-// for (const [fnName, fn] of Object.entries(exportFuncs)) {
-//   exportFuncs[fnName] = catchAsync(fn);
-// }
-
-Object.entries(exportFuncs).forEach(([fnName, fn]) => {
-  exportFuncs[fnName] = catchAsync(fn);
-});
 
 module.exports = exportFuncs;

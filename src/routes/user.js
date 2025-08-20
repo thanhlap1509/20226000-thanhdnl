@@ -10,7 +10,7 @@ const {
   queryTimePeriod,
 } = require("../validation/user");
 
-const userController = require("../controllers/user");
+const { userController } = require("../controllers/");
 
 router
   .route("/")
