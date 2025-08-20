@@ -42,7 +42,10 @@ const getNDomain = {
   }),
 };
 
-const matchUserFieldRegex = `(?:${userFields.join("|")})`;
+const userFieldsWithoutPassword = userFields.filter(
+  (item) => item !== "password",
+);
+const matchUserFieldRegex = `(?:${userFieldsWithoutPassword.join("|")})`;
 const getUsers = {
   query: Joi.object({
     sort_by: Joi.string().pattern(

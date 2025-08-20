@@ -25,12 +25,12 @@ const returnAllUsers = async (sortCondition, limit, offset, filter) => {
 };
 
 const updateUser = async (userId, userData) => {
-  const result = await userModel.updateOne(userId, userData);
+  const result = await userModel.updateOne({ _id: userId }, userData);
   return result;
 };
 
 const deleteUser = async (userId) => {
-  const result = await userModel.deleteOne(userId); // tương tự updateUser
+  const result = await userModel.deleteOne({ _id: userId });
   return result;
 };
 

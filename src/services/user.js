@@ -3,6 +3,8 @@ const prepareSortCondition = require("../utils/prepareSortCondition");
 const ObjectId = require("mongoose").Types.ObjectId;
 const errorCode = require("../error/code");
 const CustomError = require("../error/customError");
+const bcrypt = require("bcryptjs");
+const { SALT_ROUNDS } = require("../constants/user");
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
   if (ObjectId.isValid(userId)) {
@@ -19,7 +21,20 @@ const performUserIdQuery = async (userId, queryFunc, otherData) => {
   throw error;
 };
 
+const hashPassword = async (userPassword) => {
+  try {
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(userPassword, salt);
+    return hashedPassword;
+  } catch (err) {
+    const error = new CustomError(errorCode.SERVER_ERROR);
+    error.details = "Error hashing password";
+    throw error;
+  }
+};
+
 const createUser = async (data) => {
+  data.password = await hashPassword(data.password);
   const user = await userDaos.createUser(data);
   return user;
 };
@@ -40,6 +55,7 @@ const getAllUsers = async ({ sort_by, limit, offset, ...filter }) => {
 };
 
 const updateUser = async (userId, data) => {
+  data.password = await hashPassword(data.password);
   const result = await performUserIdQuery(userId, userDaos.updateUser, data);
   return result;
 };
