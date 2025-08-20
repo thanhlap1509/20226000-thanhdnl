@@ -20,7 +20,13 @@ const returnAllUsers = async ({
   start_date,
   end_date,
 }) => {
-  const filter = { email, role };
+  const filter = {};
+  if (email) {
+    filter.email = email;
+  }
+  if (role) {
+    filter.role = role;
+  }
   if (start_date && end_date) {
     filter.createdAt = { $gte: start_date, $lte: end_date };
   }
