@@ -21,26 +21,26 @@ router.route("/export").get(getUsers, userController.getUsersAsCSV);
 
 router.route("/count").get(userController.getUserCount);
 
-router.route("/count/role").get(userController.getUserCountByRoles);
+router.route("/role/count").get(userController.getUserCountByRoles);
 
 router
-  .route("/count/role/:role")
+  .route("/role/:role/count")
   .get(queryUserByRole, userController.getUserCountByRole);
 
 router
-  .route("/count/domain/")
+  .route("/domain/count")
   .get(queryTimePeriod, userController.getUserCountByEmailDomains);
 
 router
-  .route("/count/domain/:domain")
+  .route("/domain/:domain/count")
   .get(queryTimePeriod, userController.getUserCountByEmailDomain);
 
 router
-  .route("/count/domain/top/:n")
+  .route("/top/:n/domain/count")
   .get(queryTimePeriod, getNDomain, userController.getTopNEmailDomains);
 
 router
-  .route("/count/domain/bot/:n")
+  .route("/bot/:n/domain/count")
   .get(queryTimePeriod, getNDomain, userController.getLastNEmailDomains);
 
 router
