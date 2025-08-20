@@ -38,7 +38,7 @@ const updateUser = {
 
 const getNDomain = {
   params: Joi.object({
-    n: Joi.number().integer().required(),
+    n: Joi.number().integer().min(1).required(),
   }),
 };
 

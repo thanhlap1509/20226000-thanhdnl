@@ -1,10 +1,11 @@
+const ObjectId = require("mongoose").Types.ObjectId;
+
 const userDaos = require("../daos/user");
 const prepareSortCondition = require("../utils/prepareSortCondition");
-const ObjectId = require("mongoose").Types.ObjectId;
+const hashPassword = require("../utils/hashPassword");
+const strToDate = require("../utils/strToDate");
 const errorCode = require("../error/code");
 const CustomError = require("../error/customError");
-const bcrypt = require("bcryptjs");
-const { SALT_ROUNDS } = require("../constants/user");
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
   if (ObjectId.isValid(userId)) {
@@ -19,18 +20,6 @@ const performUserIdQuery = async (userId, queryFunc, otherData) => {
   const error = new CustomError(errorCode.BAD_REQUEST);
   error.details = "Invalid userId";
   throw error;
-};
-
-const hashPassword = async (userPassword) => {
-  try {
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    const hashedPassword = await bcrypt.hash(userPassword, salt);
-    return hashedPassword;
-  } catch (err) {
-    const error = new CustomError(errorCode.SERVER_ERROR);
-    error.details = "Error hashing password";
-    throw error;
-  }
 };
 
 const createUser = async (data) => {
@@ -124,13 +113,28 @@ const getUserCountByRoles = async () => {
   return roleCounts;
 };
 
-const getUserCountByEmailDomains = async (sortOrder, count) => {
-  const userStats = await userDaos.getUserCountByEmailDomains(sortOrder, count);
+const getUserCountByEmailDomains = async (
+  sortOrder,
+  domainsCount,
+  { start_date, end_date },
+) => {
+  start_date = strToDate(start_date);
+  end_date = strToDate(end_date);
+  const userStats = await userDaos.getUserCountByEmailDomains(
+    sortOrder,
+    Number(domainsCount),
+    { start_date, end_date },
+  );
   return userStats;
 };
 
-const getUserCountByEmailDomain = async (domain) => {
-  const userStats = await userDaos.getUserCountByEmailDomain(domain);
+const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
+  start_date = strToDate(start_date);
+  end_date = strToDate(end_date);
+  const userStats = await userDaos.getUserCountByEmailDomain(domain, {
+    start_date,
+    end_date,
+  });
   return userStats;
 };
 

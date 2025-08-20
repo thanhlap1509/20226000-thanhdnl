@@ -76,8 +76,11 @@ const getUserCountByRoles = async () => {
   return counts;
 };
 
-const getUserCountByEmailDomains = async (order, count) => {
-  const docCount = Number(count);
+const getUserCountByEmailDomains = async (
+  order,
+  count,
+  { start_date, end_date },
+) => {
   const pipeline = [
     {
       $project: {
@@ -106,23 +109,36 @@ const getUserCountByEmailDomains = async (order, count) => {
     },
   ];
 
+  if (start_date && end_date) {
+    pipeline.unshift({
+      $match: { createdAt: { $gte: start_date, $lte: end_date } },
+    });
+  }
+
   if (order) {
     pipeline.push({ $sort: { count: order === "asc" ? 1 : -1 } });
   }
-  if (docCount) {
-    pipeline.push({ $limit: docCount });
+
+  if (count) {
+    pipeline.push({ $limit: count });
   }
 
   const user = await userModel.aggregate(pipeline);
   return user;
 };
 
-const getUserCountByEmailDomain = async (domain) => {
+const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
+  const countQuery = {
+    email: new RegExp(`@${domain}$`, "i"),
+  };
+
+  if (start_date && end_date) {
+    countQuery.createdAt = { $gte: start_date, $lte: end_date };
+  }
+
   const user = await {
     domain,
-    count: await userModel.countDocuments({
-      email: new RegExp(`@${domain}$`, "i"),
-    }),
+    count: await userModel.countDocuments(countQuery),
   };
   return user;
 };

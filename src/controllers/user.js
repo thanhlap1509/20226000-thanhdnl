@@ -48,13 +48,20 @@ const getUserCountByRole = async (req, res) => {
 };
 
 const getUserCountByEmailDomains = async (req, res) => {
-  const userStats = await userService.getUserCountByEmailDomains();
+  const userStats = await userService.getUserCountByEmailDomains(null, null, {
+    start_date: req.query.start_date,
+    end_date: req.query.end_date,
+  });
   res.send(userStats);
 };
 
 const getUserCountByEmailDomain = async (req, res) => {
   const userStats = await userService.getUserCountByEmailDomain(
     req.params.domain,
+    {
+      start_date: req.query.start_date,
+      end_date: req.query.end_date,
+    },
   );
   res.send(userStats);
 };
@@ -63,6 +70,7 @@ const getTopNEmailDomains = async (req, res) => {
   const userStats = await userService.getUserCountByEmailDomains(
     "des",
     req.params.n,
+    { start_date: req.query.start_date, end_date: req.query.end_date },
   );
   res.send(userStats);
 };
@@ -71,6 +79,7 @@ const getLastNEmailDomains = async (req, res) => {
   const userStats = await userService.getUserCountByEmailDomains(
     "asc",
     req.params.n,
+    { start_date: req.query.start_date, end_date: req.query.end_date },
   );
   res.send(userStats);
 };
