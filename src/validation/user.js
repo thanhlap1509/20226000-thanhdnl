@@ -1,4 +1,5 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
+const moment = require("moment");
 const { Joi, validate } = require("express-validation");
 const { userFields } = require("../models/user");
 const { USER_ROLES } = require("../constants/user");
@@ -6,19 +7,11 @@ const { USER_ROLES } = require("../constants/user");
 const dateValidation = Joi.date()
   .iso()
   .custom((value, helpers) => {
-    const valueString = helpers.original;
-    const valueStringLen = valueString.length;
-
-    const valueISOString = new Date(value).toISOString();
-
-    if (
-      valueString.localeCompare(valueISOString.substring(0, valueStringLen)) !==
-      0
-    ) {
-      return helpers.error("any.invalid");
+    const date = moment(helpers.original);
+    if (date.isValid()) {
+      return value;
     }
-
-    return value;
+    return helpers.error("any.invalid");
   });
 
 const timePeriodTemplate = {
