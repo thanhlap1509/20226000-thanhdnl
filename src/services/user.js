@@ -44,28 +44,51 @@ const getUsers = async ({
 }) => {
   start_date = strToDate(start_date);
   end_date = strToDate(end_date);
+  let data;
   if (sort_by) {
     sort_by = prepareSortCondition(sort_by);
-    const users = await userDaos.returnUsers({
+    data = await userDaos.returnUsers({
       sort_by,
-      limit,
+      limit: limit + 1,
       offset,
       email,
       role,
       start_date,
       end_date,
     });
-    return users;
+  } else {
+    data = await userDaos.returnUsers({
+      limit: limit + 1,
+      offset,
+      email,
+      role,
+      start_date,
+      end_date,
+    });
   }
-  const users = await userDaos.returnUsers({
-    limit,
-    offset,
-    email,
-    role,
-    start_date,
-    end_date,
-  });
-  return users;
+  let hasNextPage;
+  let returnData;
+
+  const total = await userDaos.getUserCount();
+  const totalPages = Math.ceil(total / limit);
+
+  offset = Number(offset);
+  limit = Number(limit);
+
+  if (limit && offset) {
+    hasNextPage = data.length > limit;
+    returnData = {
+      data: data.slice(0, limit),
+      pagination: {
+        total,
+        offset,
+        limit,
+        totalPages,
+        hasNextPage,
+      },
+    };
+  }
+  return returnData;
 };
 
 const updateUser = async (userId, data) => {
