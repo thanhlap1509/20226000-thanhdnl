@@ -16,6 +16,7 @@ const returnUsers = async ({
   sort_by,
   limit,
   offset,
+  cursor,
   email,
   role,
   start_date,
@@ -30,6 +31,9 @@ const returnUsers = async ({
   }
   if (start_date && end_date) {
     filter.createdAt = { $gte: start_date, $lte: end_date };
+  }
+  if (cursor) {
+    filter._id = { $gte: cursor };
   }
   if (sort_by) {
     const user = await userModel

@@ -33,10 +33,37 @@ const getUser = async (userId) => {
   return user;
 };
 
+const queryUsersFromDb = async ({
+  sort_by,
+  limit,
+  offset,
+  cursor,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  if (sort_by) {
+    sort_by = prepareSortCondition(sort_by);
+  }
+  const data = await userDaos.returnUsers({
+    sort_by,
+    limit,
+    offset,
+    cursor,
+    email,
+    role,
+    start_date,
+    end_date,
+  });
+  return data;
+};
+
 const getUsers = async ({
   sort_by,
   limit,
   offset,
+  cursor,
   email,
   role,
   start_date,
@@ -44,39 +71,28 @@ const getUsers = async ({
 }) => {
   start_date = strToDate(start_date);
   end_date = strToDate(end_date);
-  let data;
-  if (sort_by) {
-    sort_by = prepareSortCondition(sort_by);
-    data = await userDaos.returnUsers({
-      sort_by,
-      limit: limit + 1,
-      offset,
-      email,
-      role,
-      start_date,
-      end_date,
-    });
-  } else {
-    data = await userDaos.returnUsers({
-      limit: limit + 1,
-      offset,
-      email,
-      role,
-      start_date,
-      end_date,
-    });
-  }
-  let hasNextPage;
-  let returnData;
+  offset = Number(offset);
+  limit = Number(limit) || 20;
+  cursor = ObjectId.isValid(cursor) ? cursor : null;
 
   const total = await userDaos.getUserCount();
-  const totalPages = Math.ceil(total / limit);
+  const result = await queryUsersFromDb({
+    sort_by,
+    limit: limit + 1,
+    offset,
+    cursor,
+    email,
+    role,
+    start_date,
+    end_date,
+  });
+  const hasNextPage = result.length > limit;
+  const data = hasNextPage ? result.slice(0, limit) : result;
 
-  offset = Number(offset);
-  limit = Number(limit);
+  let returnData;
 
-  if (limit && offset) {
-    hasNextPage = data.length > limit;
+  if (offset) {
+    const totalPages = Math.ceil(total / limit);
     returnData = {
       data: data.slice(0, limit),
       pagination: {
@@ -84,6 +100,17 @@ const getUsers = async ({
         offset,
         limit,
         totalPages,
+        hasNextPage,
+      },
+    };
+  } else {
+    const nextCursor = hasNextPage ? result[result.length - 1]._id : null;
+    returnData = {
+      data: data.slice(0, limit),
+      pagination: {
+        total,
+        limit,
+        nextCursor,
         hasNextPage,
       },
     };

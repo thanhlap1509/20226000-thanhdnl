@@ -19,7 +19,7 @@ const getUser = async (req, res) => {
 
 const getUsersAsCSV = async (req, res) => {
   const users = await userService.getUsers(req.query);
-  const data = converter.json2csv(JSON.parse(JSON.stringify(users)));
+  const data = converter.json2csv(JSON.parse(JSON.stringify(users.data)));
 
   res.attachment("result.csv");
   res.status(200).send(data);

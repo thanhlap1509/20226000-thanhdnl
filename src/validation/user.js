@@ -87,11 +87,8 @@ const getUsers = {
   })
     .with("start_date", "end_date")
     .with("end_date", "start_date")
-    .when(Joi.object({ limit: Joi.exist() }).unknown(), {
-      then: Joi.object().xor("cursor", "offset"),
-    })
-    .with("cursor", "limit")
-    .with("offset", "limit"),
+    .without("cursor", "offset")
+    .without("offset", "cursor"),
 };
 
 const queryUserByRole = {
