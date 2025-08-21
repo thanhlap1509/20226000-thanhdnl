@@ -77,15 +77,21 @@ const getUsers = {
         `^(${matchUserFieldRegex}\\.(asc|desc))(,${matchUserFieldRegex}\\.(asc|desc))*$`,
       ),
     ),
-    limit: Joi.number().integer(),
-    offset: Joi.number().integer(),
+    limit: Joi.number().integer().min(1),
+    offset: Joi.number().integer().min(0),
+    cursor: Joi.string(),
     email: userTemplate.email.optional(),
     role: userTemplate.role.optional(),
     start_date: timePeriodTemplate.start_date.optional(),
     end_date: timePeriodTemplate.end_date.optional(),
   })
     .with("start_date", "end_date")
-    .with("end_date", "start_date"),
+    .with("end_date", "start_date")
+    .when(Joi.object({ limit: Joi.exist() }).unknown(), {
+      then: Joi.object().xor("cursor", "offset"),
+    })
+    .with("cursor", "limit")
+    .with("offset", "limit"),
 };
 
 const queryUserByRole = {
