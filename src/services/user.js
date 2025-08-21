@@ -75,7 +75,6 @@ const getUsers = async ({
   limit = Number(limit) || 20;
   cursor = ObjectId.isValid(cursor) ? cursor : null;
 
-  const total = await userDaos.getUserCount();
   const result = await queryUsersFromDb({
     sort_by,
     limit: limit + 1,
@@ -92,14 +91,11 @@ const getUsers = async ({
   let returnData;
 
   if (offset) {
-    const totalPages = Math.ceil(total / limit);
     returnData = {
       data: data.slice(0, limit),
       pagination: {
-        total,
         offset,
         limit,
-        totalPages,
         hasNextPage,
       },
     };
@@ -108,7 +104,6 @@ const getUsers = async ({
     returnData = {
       data: data.slice(0, limit),
       pagination: {
-        total,
         limit,
         nextCursor,
         hasNextPage,
