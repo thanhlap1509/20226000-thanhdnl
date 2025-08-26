@@ -17,7 +17,7 @@ router
   .get(getUsers, userController.getUsers)
   .post(createUser, userController.createUser);
 
-router.route("/export").get(getUsers, userController.getUsersAsCSV);
+router.route("/export").get(getUsers, userController.createExportJob);
 
 router.route("/count").get(userController.getUserCount);
 

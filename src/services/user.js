@@ -1,5 +1,4 @@
 const ObjectId = require("mongoose").Types.ObjectId;
-const converter = require("json-2-csv");
 
 const userDaos = require("../daos/user");
 const prepareSortCondition = require("../utils/prepareSortCondition");
@@ -114,33 +113,6 @@ const getUsers = async ({
   return returnData;
 };
 
-const getUsersAsCSV = async ({
-  sort_by,
-  limit,
-  offset,
-  cursor,
-  email,
-  role,
-  start_date,
-  end_date,
-}) => {
-  const returnData = await getUsers({
-    sort_by,
-    limit,
-    offset,
-    cursor,
-    email,
-    role,
-    start_date,
-    end_date,
-  });
-
-  const dataAsCSV = converter.json2csv(
-    JSON.parse(JSON.stringify(returnData.data)),
-  );
-  return dataAsCSV;
-};
-
 const updateUser = async (userId, data) => {
   data.password = await hashPassword(data.password);
   const result = await performUserIdQuery(userId, userDaos.updateUser, data);
@@ -241,7 +213,6 @@ module.exports = {
   updateUser,
   getUser,
   getUsers,
-  getUsersAsCSV,
   deleteUser,
   getUserCount,
   getUserCountByRoles,
