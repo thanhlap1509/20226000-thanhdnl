@@ -33,7 +33,7 @@ const returnUsers = async ({
     filter.createdAt = { $gte: start_date, $lte: end_date };
   }
   if (cursor) {
-    filter._id = { $gte: cursor };
+    filter._id = { $gt: cursor };
   }
   if (sort_by) {
     const user = await userModel

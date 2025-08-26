@@ -100,7 +100,7 @@ const getUsers = async ({
       },
     };
   } else {
-    const nextCursor = hasNextPage ? result[result.length - 1]._id : null;
+    const nextCursor = hasNextPage ? result[result.length - 2]._id : null;
     returnData = {
       data: data.slice(0, limit),
       pagination: {
