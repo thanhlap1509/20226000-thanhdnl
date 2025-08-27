@@ -9,6 +9,8 @@ const errorHandler = require("./middlewares/errorHandler");
 const routeHandler = require("./middlewares/routeHandler");
 const shutdown = require("./utils/shutdown");
 
+app.set("view engine", "ejs");
+
 app.use(express.json({ limit: "5mb" }));
 app.use("/api", userRouter);
 app.use(routeHandler);

@@ -21,7 +21,7 @@ const returnUsers = async ({
   role,
   start_date,
   end_date,
-}) => {
+} = {}) => {
   const filter = {};
   if (email) {
     filter.email = email;
