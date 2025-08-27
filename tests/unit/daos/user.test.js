@@ -1,4 +1,3 @@
-import { ValidationError } from "express-validation";
 import {
   describe,
   expect,
@@ -8,6 +7,7 @@ import {
   beforeAll,
   afterAll,
 } from "vitest";
+const { ValidationError } = require("express-validation");
 const {
   createUser,
   findUserById,
@@ -17,8 +17,6 @@ const {
   getUserCount,
   getUserCountByRole,
   getUserCountByRoles,
-  getUserCountByEmailDomains,
-  getUserCountByEmailDomain,
   getUserCreatedTime,
 } = require("../../../src/daos/user");
 const mongoose = require("mongoose");

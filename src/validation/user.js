@@ -61,13 +61,14 @@ const getNDomain = {
 const userFieldsWithoutPassword = userFields.filter(
   (item) => item !== "password",
 );
-const matchUserFieldRegex = `(?:${userFieldsWithoutPassword.join("|")})`;
+// eslint-disable-next-line max-len
+const matchUserFieldRegex = `(?:${userFieldsWithoutPassword.join("|")})\\.(asc|desc)`;
 const getUsers = {
   query: Joi.object({
     sort_by: Joi.string().pattern(
       new RegExp(
         // eslint-disable-next-line max-len
-        `^(${matchUserFieldRegex}\\.(asc|desc))(,${matchUserFieldRegex}\\.(asc|desc))*$`,
+        `^(${matchUserFieldRegex})(,${matchUserFieldRegex})*$`,
       ),
     ),
     limit: Joi.number().integer().min(1),
