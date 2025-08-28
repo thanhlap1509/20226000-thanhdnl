@@ -17,18 +17,20 @@ const getUser = async (req, res) => {
 };
 
 const addExportJob = async (req, res) => {
-  const job = await userService.addExportJob(
+  const { _id, progress } = await userService.addExportJob(
     req.query,
     req.protocol,
     req.get("host"),
     req.originalUrl,
   );
-  res.send(job);
+  res.send({ _id, progress });
 };
 
 const checkExportJob = async (req, res) => {
-  const jobDoc = await userService.checkExportJob(req.params.jobId);
-  res.send(jobDoc);
+  const { progress, downloadUrl } = await userService.checkExportJob(
+    req.params.jobId,
+  );
+  res.send({ progress, downloadUrl });
 };
 
 const downloadExportCSV = async (req, res) => {

@@ -7,7 +7,15 @@ const errorHandler = (err, req, res, next) => {
   console.log(err.code);
   console.log(err.statusCode);
 
-  const statusCode = err.code || err.statusCode || errorCode.SERVER_ERROR;
+  let statusCode;
+  if (Number.isInteger(err.code)) {
+    statusCode = err.code;
+  } else if (Number.isInteger(err.statusCode)) {
+    statusCode = err.statusCode;
+  } else {
+    statusCode = errorCode.SERVER_ERROR;
+  }
+
   let returnCode = statusCode;
   let { message } = err;
   let details = err instanceof ValidationError ? err.details : null;
