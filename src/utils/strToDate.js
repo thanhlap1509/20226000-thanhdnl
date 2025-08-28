@@ -1,7 +1,7 @@
-const moment = require("moment");
+import moment from "moment";
 const strToDate = (dateStr) => {
   const date = dateStr ? moment(dateStr) : null;
   return date;
 };
 
-module.exports = strToDate;
+export default strToDate;

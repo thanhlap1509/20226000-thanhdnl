@@ -1,17 +1,17 @@
-const express = require("express");
+import express, { json } from "express";
 const app = express();
-require("dotenv").config();
-const { closeConnection } = require("./models");
+import "dotenv/config.js";
+import { closeConnection } from "./models/index.js";
 
-const { PORT } = require("./configs");
-const userRouter = require("./routes");
-const errorHandler = require("./middlewares/errorHandler");
-const routeHandler = require("./middlewares/routeHandler");
-const shutdown = require("./utils/shutdown");
+import { PORT } from "./configs/index.js";
+import userRouter from "./routes/index.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import routeHandler from "./middlewares/routeHandler.js";
+import shutdown from "./utils/shutdown.js";
 
 app.set("view engine", "ejs");
 
-app.use(express.json({ limit: "5mb" }));
+app.use(json({ limit: "5mb" }));
 app.use("/api", userRouter);
 app.use(routeHandler);
 app.use(errorHandler);

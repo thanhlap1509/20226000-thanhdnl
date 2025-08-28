@@ -1,4 +1,2 @@
-module.exports = {
-  USER_ROLES: ["admin", "user"],
-  SALT_ROUNDS: 10,
-};
+export const USER_ROLES = ["admin", "user"];
+export const SALT_ROUNDS = 10;

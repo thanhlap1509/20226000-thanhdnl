@@ -1,5 +1,13 @@
-const { ValidationError } = require("express-validation");
-const errorCode = require("../error/code");
+import { ValidationError } from "express-validation";
+import {
+  SERVER_ERROR,
+  BAD_REQUEST,
+  NOT_FOUND,
+  USER_EXIST,
+  OUT_OF_MEM,
+  REQUEST_TOO_LARGE,
+  OK,
+} from "../error/code.js";
 
 const errorHandler = (err, req, res, next) => {
   console.log("-------------");
@@ -13,42 +21,42 @@ const errorHandler = (err, req, res, next) => {
   } else if (Number.isInteger(err.statusCode)) {
     statusCode = err.statusCode;
   } else {
-    statusCode = errorCode.SERVER_ERROR;
+    statusCode = SERVER_ERROR;
   }
 
   let returnCode = statusCode;
   let { message } = err;
   let details = err instanceof ValidationError ? err.details : null;
   switch (statusCode) {
-    case errorCode.BAD_REQUEST:
+    case BAD_REQUEST:
       message = "Bad request";
       details = err.details;
       break;
-    case errorCode.NOT_FOUND:
+    case NOT_FOUND:
       message = `Resource not found ${req.url}`;
       details = err.details;
       break;
-    case errorCode.SERVER_ERROR:
+    case SERVER_ERROR:
       message = "Server error";
       details = err.details;
       break;
-    case errorCode.USER_EXIST:
+    case USER_EXIST:
       message = "This email is already register";
-      returnCode = errorCode.BAD_REQUEST;
+      returnCode = BAD_REQUEST;
       details = err.details;
       break;
-    case errorCode.OUT_OF_MEM:
+    case OUT_OF_MEM:
       message = "Error from Atlas";
-      returnCode = errorCode.SERVER_ERROR;
+      returnCode = SERVER_ERROR;
       details = err.errorResponse.errmsg;
       break;
-    case errorCode.REQUEST_TOO_LARGE:
+    case REQUEST_TOO_LARGE:
       message = "Request is too large";
       details = err.details;
       break;
     default:
       message = "Don't know";
-      returnCode = errorCode.OK;
+      returnCode = OK;
       details = err.details;
       break;
   }
@@ -59,4 +67,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

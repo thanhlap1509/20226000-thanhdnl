@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const EXPORT_JOB_STATUS = {
   PENDING: "pending",
@@ -11,7 +11,7 @@ const EXPORT_JOB_NAME = {
   EXPORT_USERS: "export_user",
 };
 
-const exportJobSchema = new mongoose.Schema(
+const exportJobSchema = new Schema(
   {
     name: {
       type: String,
@@ -36,5 +36,5 @@ const exportJobSchema = new mongoose.Schema(
   { versionKey: false, timestamps: { createdAt: true, updatedAt: false } },
 );
 
-const exportJobModel = mongoose.model("ExportJob", exportJobSchema);
-module.exports = { exportJobModel, EXPORT_JOB_STATUS, EXPORT_JOB_NAME };
+const exportJobModel = model("ExportJob", exportJobSchema);
+export default { exportJobModel, EXPORT_JOB_STATUS, EXPORT_JOB_NAME };

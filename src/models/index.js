@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { MONGODB_URI } = require("../configs");
+import mongoose from "mongoose";
+import { MONGODB_URI } from "../configs/index.js";
 
 mongoose
   .connect(MONGODB_URI, {
@@ -23,4 +23,5 @@ const closeConnection = async () => {
     });
 };
 
-module.exports.closeConnection = closeConnection;
+const _closeConnection = closeConnection;
+export { _closeConnection as closeConnection };

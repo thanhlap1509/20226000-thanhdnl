@@ -7,4 +7,4 @@ const shutdown = (server, closeConnection) => {
   });
 };
 
-module.exports = shutdown;
+export default shutdown;

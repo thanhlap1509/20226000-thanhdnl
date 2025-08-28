@@ -15,7 +15,7 @@ export default defineConfig([
       "js/recommended", // recommended JS rules
       prettierConfig, // turn off ESLint rules that conflict with Prettier
     ],
-    languageOptions: { globals: globals.browser },
+    languageOptions: { globals: globals.browser, sourceType: "module" },
     rules: {
       semi: ["error", "always"],
       "operator-linebreak": "warn",
@@ -46,10 +46,6 @@ export default defineConfig([
       "max-len": ["warn", { code: 80 }],
       "no-unused-vars": "off",
     },
-  },
-  {
-    files: ["**/*.js"],
-    languageOptions: { sourceType: "commonjs" },
   },
 ]);
 

@@ -1,5 +1,5 @@
-const { StatusCodes } = require("http-status-codes");
-const userService = require("../services/user");
+import { StatusCodes } from "http-status-codes";
+import userService from "../services/user.js";
 
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -106,7 +106,7 @@ const getLastNEmailDomains = async (req, res) => {
   );
   res.send(userStats);
 };
-const exportFuncs = {
+export {
   createUser,
   getUser,
   getUsers,
@@ -124,5 +124,3 @@ const exportFuncs = {
   getTopNEmailDomains,
   getUserAge,
 };
-
-module.exports = exportFuncs;

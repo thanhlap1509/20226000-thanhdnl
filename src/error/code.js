@@ -1,11 +1,9 @@
-module.exports = {
-  OK: 200,
-  CREATED: 201,
-  NO_CONTENT: 204,
-  BAD_REQUEST: 400,
-  NOT_FOUND: 404,
-  REQUEST_TOO_LARGE: 413,
-  SERVER_ERROR: 500,
-  OUT_OF_MEM: 8000,
-  USER_EXIST: 11000,
-};
+export const OK = 200;
+export const CREATED = 201;
+export const NO_CONTENT = 204;
+export const BAD_REQUEST = 400;
+export const NOT_FOUND = 404;
+export const REQUEST_TOO_LARGE = 413;
+export const SERVER_ERROR = 500;
+export const OUT_OF_MEM = 8000;
+export const USER_EXIST = 11000;

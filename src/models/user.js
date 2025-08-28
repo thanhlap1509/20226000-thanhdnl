@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const { USER_ROLES } = require("../constants/user");
-const userSchema = new mongoose.Schema(
+import { Schema, model } from "mongoose";
+import validator from "validator";
+import { USER_ROLES } from "../constants/user.js";
+const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -32,5 +32,6 @@ const userSchema = new mongoose.Schema(
 
 const userFields = Object.keys(userSchema.paths);
 
-module.exports.userModel = mongoose.model("User", userSchema);
-module.exports.userFields = userFields.sort();
+export const userModel = model("User", userSchema);
+const _userFields = userFields.sort();
+export { _userFields as userFields };

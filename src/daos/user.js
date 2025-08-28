@@ -1,4 +1,4 @@
-const { userModel } = require("../models/user");
+import { userModel } from "../models/user.js";
 
 const createUser = async (userData) => {
   const user = await userModel.insertOne(userData);
@@ -166,7 +166,7 @@ const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
   return user;
 };
 
-module.exports = {
+export default {
   createUser,
   findUserById,
   returnUsers,

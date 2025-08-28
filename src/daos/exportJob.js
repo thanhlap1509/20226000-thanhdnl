@@ -1,4 +1,5 @@
-const { exportJobModel } = require("../models/exportJob");
+import exportJob from "../models/exportJob.js";
+const { exportJobModel } = exportJob;
 
 const addExportJob = async (config, name) => {
   const job = await exportJobModel.insertOne({ config, name });
@@ -15,8 +16,7 @@ const updateExportJobStatus = async (id, progress, downloadUrl) => {
     progress,
     downloadUrl,
   });
-  console.log(result);
   return result;
 };
 
-module.exports = { addExportJob, getJobById, updateExportJobStatus };
+export default { addExportJob, getJobById, updateExportJobStatus };

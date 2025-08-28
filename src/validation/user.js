@@ -1,8 +1,8 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
-const moment = require("moment");
-const { Joi, validate } = require("express-validation");
-const { userFields } = require("../models/user");
-const { USER_ROLES } = require("../constants/user");
+import moment from "moment";
+import { Joi, validate } from "express-validation";
+import { userFields } from "../models/user.js";
+import { USER_ROLES } from "../constants/user.js";
 
 const dateValidation = Joi.date()
   .iso()
@@ -35,24 +35,24 @@ const userJoiObject = Joi.object({
 
 const userId = Joi.string().trim();
 
-const createUser = {
+const createUserTemplate = {
   body: userJoiObject.required(),
 };
 
-const queryUserId = {
+const queryUserIdTemplate = {
   params: Joi.object({
     userId: userId.required(),
   }),
 };
 
-const updateUser = {
+const updateUserTemplate = {
   params: Joi.object({ userId: userId.required() }),
   body: userJoiObject
     .fork(["email", "password", "role"], (schema) => schema.optional())
     .or("email", "password", "role"),
 };
 
-const getNDomain = {
+const getNDomainTemplate = {
   params: Joi.object({
     n: Joi.number().integer().min(1).required(),
   }),
@@ -63,7 +63,7 @@ const userFieldsWithoutPassword = userFields.filter(
 );
 // eslint-disable-next-line max-len
 const matchUserFieldRegex = `(?:${userFieldsWithoutPassword.join("|")})\\.(asc|desc)`;
-const getUsers = {
+const getUsersTemplate = {
   query: Joi.object({
     sort_by: Joi.string().pattern(
       new RegExp(
@@ -85,13 +85,13 @@ const getUsers = {
     .without("offset", "cursor"),
 };
 
-const queryUserByRole = {
+const queryUserByRoleTemplate = {
   params: Joi.object({
     role: userTemplate.role.optional(),
   }),
 };
 
-const queryTimePeriod = {
+const queryTimePeriodTemplate = {
   query: Joi.object({
     start_date: timePeriodTemplate.start_date,
     end_date: timePeriodTemplate.end_date,
@@ -100,12 +100,24 @@ const queryTimePeriod = {
     .with("end_date", "start_date"),
 };
 
-module.exports = {
-  queryUserId: validate(queryUserId, { keyByField: true }),
-  createUser: validate(createUser, { keyByField: true }),
-  updateUser: validate(updateUser, { keyByField: true }),
-  getNDomain: validate(getNDomain, { keyByField: true }),
-  getUsers: validate(getUsers, { keyByField: true }),
-  queryUserByRole: validate(queryUserByRole, { keyByField: true }),
-  queryTimePeriod: validate(queryTimePeriod, { keyByField: true }),
-};
+export const queryUserIdValidator = validate(queryUserIdTemplate, {
+  keyByField: true,
+});
+export const createUserValidator = validate(createUserTemplate, {
+  keyByField: true,
+});
+export const updateUserValidator = validate(updateUserTemplate, {
+  keyByField: true,
+});
+export const getNDomainValidator = validate(getNDomainTemplate, {
+  keyByField: true,
+});
+export const getUsersValidator = validate(getUsersTemplate, {
+  keyByField: true,
+});
+export const queryUserByRoleValidator = validate(queryUserByRoleTemplate, {
+  keyByField: true,
+});
+export const queryTimePeriodValidator = validate(queryTimePeriodTemplate, {
+  keyByField: true,
+});

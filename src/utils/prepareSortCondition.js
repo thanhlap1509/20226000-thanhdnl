@@ -1,5 +1,5 @@
-const errorCode = require("../error/code");
-const CustomError = require("../error/customError");
+import { BAD_REQUEST } from "../error/code.js";
+import CustomError from "../error/customError.js";
 const prepareSortCondition = (condition) => {
   const fields = condition.split(",");
   const filterObj = {};
@@ -11,7 +11,7 @@ const prepareSortCondition = (condition) => {
     field = fields[idx];
     [fieldName, sortOrder] = field.split(".");
     if (filterObj[fieldName]) {
-      const error = new CustomError(errorCode.BAD_REQUEST);
+      const error = new CustomError(BAD_REQUEST);
       error.details = `Duplicate field ${fieldName}`;
       throw error;
     } else {
@@ -21,4 +21,4 @@ const prepareSortCondition = (condition) => {
   return filterObj;
 };
 
-module.exports = prepareSortCondition;
+export default prepareSortCondition;

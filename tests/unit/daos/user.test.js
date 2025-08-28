@@ -7,8 +7,7 @@ import {
   beforeAll,
   afterAll,
 } from "vitest";
-const { ValidationError } = require("express-validation");
-const {
+import {
   createUser,
   findUserById,
   returnUsers,
@@ -18,9 +17,9 @@ const {
   getUserCountByRole,
   getUserCountByRoles,
   getUserCreatedTime,
-} = require("../../../src/daos/user");
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
+} from "../../../src/daos/user";
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 const truthyEmail1 = "abc@gmail.com";
 const truthyEmail2 = "ghf@gmail.com";

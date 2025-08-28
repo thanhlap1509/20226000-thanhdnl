@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 
-const hashPassword = require("../../../src/utils/hashPassword");
+import hashPassword from "../../../src/utils/hashPassword.js";
 
 describe("Hash password", () => {
   test("Hashed password can be verify with original", async () => {

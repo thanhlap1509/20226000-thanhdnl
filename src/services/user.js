@@ -1,17 +1,19 @@
-const ObjectId = require("mongoose").Types.ObjectId;
-const { mkConfig, generateCsv, asString } = require("export-to-csv");
-const { writeFile } = require("node:fs");
-const { Buffer } = require("node:buffer");
-const path = require("path");
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
+import { mkConfig, generateCsv, asString } from "export-to-csv";
+import { writeFile } from "node:fs";
+import { Buffer } from "node:buffer";
+import { resolve } from "path";
 
-const userDaos = require("../daos/user");
-const exportJobDaos = require("../daos/exportJob");
-const { EXPORT_JOB_NAME, EXPORT_JOB_STATUS } = require("../models/exportJob");
-const prepareSortCondition = require("../utils/prepareSortCondition");
-const hashPassword = require("../utils/hashPassword");
-const strToDate = require("../utils/strToDate");
-const errorCode = require("../error/code");
-const CustomError = require("../error/customError");
+import userDaos from "../daos/user.js";
+import exportJobDaos from "../daos/exportJob.js";
+import exportJob from "../models/exportJob.js";
+const { EXPORT_JOB_NAME, EXPORT_JOB_STATUS } = exportJob;
+import prepareSortCondition from "../utils/prepareSortCondition.js";
+import hashPassword from "../utils/hashPassword.js";
+import strToDate from "../utils/strToDate.js";
+import { NOT_FOUND, BAD_REQUEST } from "../error/code.js";
+import CustomError from "../error/customError.js";
 
 const csvConfig = mkConfig({
   useKeysAsHeaders: true,
@@ -25,11 +27,11 @@ const performUserIdQuery = async (userId, queryFunc, otherData) => {
     if (res) {
       return res;
     }
-    const error = new CustomError(errorCode.NOT_FOUND);
+    const error = new CustomError(NOT_FOUND);
     error.details = "User not found";
     throw error;
   }
-  const error = new CustomError(errorCode.BAD_REQUEST);
+  const error = new CustomError(BAD_REQUEST);
   error.details = "Invalid userId";
   throw error;
 };
@@ -102,7 +104,7 @@ const getUsers = async ({
 
 const constructExportFilePath = (jobName, jobId) => {
   const filename = `${jobName}_${jobId}_.csv`;
-  const filePath = path.resolve("./export", filename);
+  const filePath = resolve("./export", filename);
   return filePath;
 };
 const returnUsersAsCSV = async ({
@@ -277,7 +279,7 @@ const getExportJobFilePath = async (jobId) => {
   return filePath;
 };
 
-module.exports = {
+export default {
   createUser,
   updateUser,
   getUser,

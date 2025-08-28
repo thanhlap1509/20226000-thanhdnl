@@ -1,58 +1,75 @@
-const express = require("express");
-const router = express.Router();
-const {
+import { Router } from "express";
+const router = Router();
+import {
+  getUsersValidator,
+  createUserValidator,
+  queryUserIdValidator,
+  updateUserValidator,
+  getNDomainValidator,
+  queryUserByRoleValidator,
+  queryTimePeriodValidator,
+} from "../validation/user.js";
+
+import {
   getUsers,
   createUser,
-  queryUserId,
-  updateUser,
-  getNDomain,
-  queryUserByRole,
-  queryTimePeriod,
-} = require("../validation/user");
-
-const userController = require("../controllers/user");
+  addExportJob,
+  checkExportJob,
+  downloadExportCSV,
+  getUserCount,
+  getUserCountByRoles,
+  getUserCountByRole,
+  getUserCountByEmailDomains,
+  getUserCountByEmailDomain,
+  getTopNEmailDomains,
+  getLastNEmailDomains,
+  getUser,
+  updateUser as _updateUser,
+  deleteUser,
+  getUserAge,
+} from "../controllers/user.js";
 
 router
   .route("/")
-  .get(getUsers, userController.getUsers)
-  .post(createUser, userController.createUser);
+  .get(getUsersValidator, getUsers)
+  .post(createUserValidator, createUser);
 
-router.route("/export").get(getUsers, userController.addExportJob);
+router.route("/export").get(getUsersValidator, addExportJob);
 
-router.route("/export/:jobId").get(userController.checkExportJob);
+router.route("/export/:jobId").get(checkExportJob);
 
-router.route("/export/:jobId/download").get(userController.downloadExportCSV);
+router.route("/export/:jobId/download").get(downloadExportCSV);
 
-router.route("/count").get(userController.getUserCount);
+router.route("/count").get(getUserCount);
 
-router.route("/role/count").get(userController.getUserCountByRoles);
+router.route("/role/count").get(getUserCountByRoles);
 
 router
   .route("/role/:role/count")
-  .get(queryUserByRole, userController.getUserCountByRole);
+  .get(queryUserByRoleValidator, getUserCountByRole);
 
 router
   .route("/domain/count")
-  .get(queryTimePeriod, userController.getUserCountByEmailDomains);
+  .get(queryTimePeriodValidator, getUserCountByEmailDomains);
 
 router
   .route("/domain/:domain/count")
-  .get(queryTimePeriod, userController.getUserCountByEmailDomain);
+  .get(queryTimePeriodValidator, getUserCountByEmailDomain);
 
 router
   .route("/top/:n/domain/count")
-  .get(queryTimePeriod, getNDomain, userController.getTopNEmailDomains);
+  .get(queryTimePeriodValidator, getNDomainValidator, getTopNEmailDomains);
 
 router
   .route("/bot/:n/domain/count")
-  .get(queryTimePeriod, getNDomain, userController.getLastNEmailDomains);
+  .get(queryTimePeriodValidator, getNDomainValidator, getLastNEmailDomains);
 
 router
   .route("/:userId")
-  .get(queryUserId, userController.getUser)
-  .put(updateUser, userController.updateUser)
-  .delete(queryUserId, userController.deleteUser);
+  .get(queryUserIdValidator, getUser)
+  .put(updateUserValidator, _updateUser)
+  .delete(queryUserIdValidator, deleteUser);
 
-router.route("/:userId/age").get(queryUserId, userController.getUserAge);
+router.route("/:userId/age").get(queryUserIdValidator, getUserAge);
 
-module.exports = router;
+export default router;
