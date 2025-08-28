@@ -1,11 +1,23 @@
 const ObjectId = require("mongoose").Types.ObjectId;
+const { mkConfig, generateCsv, asString } = require("export-to-csv");
+const { writeFile } = require("node:fs");
+const { Buffer } = require("node:buffer");
+const path = require("path");
 
 const userDaos = require("../daos/user");
+const exportJobDaos = require("../daos/exportJob");
+const { EXPORT_JOB_NAME, EXPORT_JOB_STATUS } = require("../models/exportJob");
 const prepareSortCondition = require("../utils/prepareSortCondition");
 const hashPassword = require("../utils/hashPassword");
 const strToDate = require("../utils/strToDate");
 const errorCode = require("../error/code");
 const CustomError = require("../error/customError");
+
+const csvConfig = mkConfig({
+  useKeysAsHeaders: true,
+  filename: "result",
+  quoteCharacter: "",
+});
 
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
   if (ObjectId.isValid(userId)) {
@@ -33,32 +45,6 @@ const getUser = async (userId) => {
   return user;
 };
 
-const queryUsersFromDb = async ({
-  sort_by,
-  limit,
-  offset,
-  cursor,
-  email,
-  role,
-  start_date,
-  end_date,
-}) => {
-  if (sort_by) {
-    sort_by = prepareSortCondition(sort_by);
-  }
-  const data = await userDaos.returnUsers({
-    sort_by,
-    limit,
-    offset,
-    cursor,
-    email,
-    role,
-    start_date,
-    end_date,
-  });
-  return data;
-};
-
 const getUsers = async ({
   sort_by,
   limit,
@@ -74,8 +60,9 @@ const getUsers = async ({
   offset = Number(offset);
   limit = Number(limit) || 20;
   cursor = ObjectId.isValid(cursor) ? cursor : null;
+  sort_by = sort_by ? prepareSortCondition(sort_by) : null;
 
-  const result = await queryUsersFromDb({
+  const result = await userDaos.returnUsers({
     sort_by,
     limit: limit + 1,
     offset,
@@ -111,6 +98,63 @@ const getUsers = async ({
     };
   }
   return returnData;
+};
+
+const constructExportFilePath = (jobName, jobId) => {
+  const filename = `${jobName}_${jobId}_.csv`;
+  const filePath = path.resolve("./export", filename);
+  return filePath;
+};
+const returnUsersAsCSV = async ({
+  jobId,
+  jobName,
+  protocol,
+  host,
+  originalUrl,
+  sort_by,
+  limit,
+  offset,
+  cursor,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  try {
+    const users = await getUsers({
+      sort_by,
+      limit,
+      offset,
+      cursor,
+      email,
+      role,
+      start_date,
+      end_date,
+    });
+
+    const csvData = users.data.length > 0 ? users.data : "";
+    const csv = generateCsv(csvConfig)(JSON.parse(JSON.stringify(csvData)));
+    const filePath = constructExportFilePath(jobName, jobId);
+    const csvBuffer = new Uint8Array(Buffer.from(asString(csv)));
+
+    writeFile(filePath, csvBuffer, () => {
+      console.log(`File saved at ${filePath}`);
+    });
+
+    const fullUrl = `${protocol}://${host}${originalUrl}`;
+    const url = new URL(fullUrl);
+    url.pathname += `/${jobId}/download`;
+
+    await exportJobDaos.updateExportJobStatus(
+      jobId,
+      EXPORT_JOB_STATUS.COMPLETE,
+      url.toString(),
+    );
+    return;
+  } catch (err) {
+    await exportJobDaos.updateExportJobStatus(jobId, EXPORT_JOB_STATUS.FAIL);
+    throw err;
+  }
 };
 
 const updateUser = async (userId, data) => {
@@ -208,6 +252,31 @@ const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
   return userStats;
 };
 
+const addExportJob = async (params, protocol, host, originalUrl) => {
+  const jobName = EXPORT_JOB_NAME.EXPORT_USERS;
+  const job = await exportJobDaos.addExportJob(params, jobName);
+  const jobId = job._id;
+  // cal the return users function
+  returnUsersAsCSV({ jobId, jobName, protocol, host, originalUrl, ...params });
+  return job;
+};
+
+const checkExportJob = async (jobId) => {
+  const job = await exportJobDaos.getJobById(jobId);
+  return job;
+};
+
+const updateExportJob = async (jobId, status) => {
+  const result = await exportJobDaos.updateExportJobStatus(jobId, status);
+  return result;
+};
+
+const getExportJobFilePath = async (jobId) => {
+  const job = await exportJobDaos.getJobById(jobId);
+  const filePath = constructExportFilePath(job.name, job._id);
+  return filePath;
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -220,4 +289,8 @@ module.exports = {
   getUserCountByEmailDomains,
   getUserCountByEmailDomain,
   getUserAge,
+  addExportJob,
+  checkExportJob,
+  updateExportJob,
+  getExportJobFilePath,
 };

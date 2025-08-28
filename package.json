@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "graceful_test": "node src/index.js",
+    "worker": "nodemon src/utils/worker.js",
     "start": "nodemon src/index.js",
     "test": "vitest"
   },
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/thanhlap1509/express-application#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "bullmq": "^5.58.2",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "export-to-csv": "^1.4.0",

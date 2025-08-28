@@ -1,6 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
 const userService = require("../services/user");
-const { addExportJob } = require("../utils/queue");
 
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -17,9 +16,26 @@ const getUser = async (req, res) => {
   res.send(user);
 };
 
-const createExportJob = async (req, res) => {
-  const jobId = await addExportJob(req.query);
-  res.send(`Exporting file, perform job ${jobId}`);
+const addExportJob = async (req, res) => {
+  const job = await userService.addExportJob(
+    req.query,
+    req.protocol,
+    req.get("host"),
+    req.originalUrl,
+  );
+  res.send(job);
+};
+
+const checkExportJob = async (req, res) => {
+  const jobDoc = await userService.checkExportJob(req.params.jobId);
+  res.send(jobDoc);
+};
+
+const downloadExportCSV = async (req, res) => {
+  const exportJobFilePath = await userService.getExportJobFilePath(
+    req.params.jobId,
+  );
+  res.download(exportJobFilePath);
 };
 
 const updateUser = async (req, res) => {
@@ -92,7 +108,9 @@ const exportFuncs = {
   createUser,
   getUser,
   getUsers,
-  createExportJob,
+  addExportJob,
+  checkExportJob,
+  downloadExportCSV,
   updateUser,
   deleteUser,
   getUserCount,
