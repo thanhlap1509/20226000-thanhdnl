@@ -12,16 +12,7 @@ const findUserById = async (userId) => {
   return user;
 };
 
-const returnUsers = async ({
-  sort_by,
-  limit,
-  offset,
-  cursor,
-  email,
-  role,
-  start_date,
-  end_date,
-} = {}) => {
+const prepareFilter = (email, role, start_date, end_date) => {
   const filter = {};
   if (email) {
     filter.email = email;
@@ -32,10 +23,50 @@ const returnUsers = async ({
   if (start_date && end_date) {
     filter.createdAt = { $gte: start_date, $lte: end_date };
   }
-  if (cursor) {
-    filter._id = { $gt: cursor };
+  return filter;
+};
+const returnUsersByCursor = async ({
+  limit,
+  sort_by,
+  email,
+  role,
+  start_date,
+  end_date,
+  _id,
+} = {}) => {
+  const filter = prepareFilter(email, role, start_date, end_date);
+  if (_id) {
+    filter._id = { $gt: _id };
   }
   if (sort_by) {
+    const user = await userModel
+      .find(filter, { password: 0 })
+      .sort(sort_by)
+      .limit(limit)
+      .lean();
+    return user;
+  }
+  const user = await userModel
+    .find(filter, { password: 0 })
+    .limit(limit)
+    .lean();
+  return user;
+};
+
+const returnUsersByOffset = async ({
+  limit,
+  sort_by,
+  offset,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  const filter = prepareFilter(email, role, start_date, end_date);
+  if (sort_by) {
+    console.log("test");
+    console.log(filter, sort_by);
+
     const user = await userModel
       .find(filter, { password: 0 })
       .sort(sort_by)
@@ -169,7 +200,8 @@ const getUserCountByEmailDomain = async (domain, { start_date, end_date }) => {
 export default {
   createUser,
   findUserById,
-  returnUsers,
+  returnUsersByOffset,
+  returnUsersByCursor,
   updateUser,
   deleteUser,
   getUserCount,

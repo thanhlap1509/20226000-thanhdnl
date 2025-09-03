@@ -36,6 +36,19 @@ const performUserIdQuery = async (userId, queryFunc, otherData) => {
   throw error;
 };
 
+const encodeCursor = (obj) => {
+  const cursor = Buffer.from(JSON.stringify(obj), "utf8").toString("base64");
+  return cursor;
+};
+
+const decodeCursor = (cursor) => {
+  if (cursor) {
+    const obj = JSON.parse(Buffer.from(cursor, "base64").toString("utf8"));
+    return obj;
+  }
+  return null;
+};
+
 const createUser = async (data) => {
   data.password = await hashPassword(data.password);
   const user = await userDaos.createUser(data);
@@ -47,9 +60,92 @@ const getUser = async (userId) => {
   return user;
 };
 
-const getUsers = async ({
-  sort_by,
+const computeReturnData = (queryResult, limit) => {
+  const hasNextPage = queryResult.length > limit;
+  const data = hasNextPage ? queryResult.slice(0, limit) : queryResult;
+  return { data, hasNextPage };
+};
+
+const getUsersUsingCursor = async ({
   limit,
+  sort_by,
+  email,
+  role,
+  start_date,
+  end_date,
+  _id,
+}) => {
+  const queryResult = await userDaos.returnUsersByCursor({
+    sort_by,
+    limit: limit + 1,
+    email,
+    role,
+    start_date,
+    end_date,
+    _id,
+  });
+
+  const { data, hasNextPage } = computeReturnData(queryResult, limit);
+
+  const lastDocId = hasNextPage
+    ? queryResult[queryResult.length - 2]._id
+    : queryResult[queryResult.length - 1]._id;
+
+  const cursor = encodeCursor({
+    limit,
+    sort_by,
+    email,
+    role,
+    start_date,
+    end_date,
+    _id: lastDocId,
+  });
+  const returnData = {
+    data,
+    pagination: {
+      limit,
+      hasNextPage,
+      cursor,
+    },
+  };
+  return returnData;
+};
+
+const getUsersUsingOffset = async ({
+  limit,
+  sort_by,
+  offset,
+  email,
+  role,
+  start_date,
+  end_date,
+}) => {
+  const queryResult = await userDaos.returnUsersByOffset({
+    sort_by,
+    limit: limit + 1,
+    offset,
+    email,
+    role,
+    start_date,
+    end_date,
+  });
+
+  const { data, hasNextPage } = computeReturnData(queryResult, limit);
+
+  const returnData = {
+    data,
+    pagination: {
+      limit,
+      hasNextPage,
+      offset,
+    },
+  };
+  return returnData;
+};
+
+const getUsers = async ({
+  limit,
+  sort_by,
   offset,
   cursor,
   email,
@@ -57,47 +153,38 @@ const getUsers = async ({
   start_date,
   end_date,
 }) => {
+  limit = Number(limit) || 20;
+  sort_by = sort_by ? prepareSortCondition(sort_by) : null;
+  offset = Number(offset);
   start_date = strToDate(start_date);
   end_date = strToDate(end_date);
-  offset = Number(offset);
-  limit = Number(limit) || 20;
-  cursor = ObjectId.isValid(cursor) ? cursor : null;
-  sort_by = sort_by ? prepareSortCondition(sort_by) : null;
-
-  const result = await userDaos.returnUsers({
-    sort_by,
-    limit: limit + 1,
-    offset,
-    cursor,
-    email,
-    role,
-    start_date,
-    end_date,
-  });
-  const hasNextPage = result.length > limit;
-  const data = hasNextPage ? result.slice(0, limit) : result;
 
   let returnData;
 
   if (offset) {
-    returnData = {
-      data: data.slice(0, limit),
-      pagination: {
-        offset,
-        limit,
-        hasNextPage,
-      },
-    };
+    returnData = getUsersUsingOffset({
+      limit,
+      sort_by,
+      offset,
+      email,
+      role,
+      start_date,
+      end_date,
+    });
   } else {
-    const nextCursor = hasNextPage ? result[result.length - 2]._id : null;
-    returnData = {
-      data: data.slice(0, limit),
-      pagination: {
+    const queryCond = decodeCursor(cursor);
+    if (queryCond) {
+      returnData = getUsersUsingCursor({ limit, ...queryCond });
+    } else {
+      returnData = getUsersUsingCursor({
         limit,
-        nextCursor,
-        hasNextPage,
-      },
-    };
+        sort_by,
+        email,
+        role,
+        start_date,
+        end_date,
+      });
+    }
   }
   return returnData;
 };
