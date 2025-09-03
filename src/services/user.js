@@ -162,7 +162,7 @@ const getUsers = async ({
   let returnData;
 
   if (offset) {
-    returnData = getUsersUsingOffset({
+    returnData = await getUsersUsingOffset({
       limit,
       sort_by,
       offset,
@@ -174,9 +174,9 @@ const getUsers = async ({
   } else {
     const queryCond = decodeCursor(cursor);
     if (queryCond) {
-      returnData = getUsersUsingCursor({ limit, ...queryCond });
+      returnData = await getUsersUsingCursor({ limit, ...queryCond });
     } else {
-      returnData = getUsersUsingCursor({
+      returnData = await getUsersUsingCursor({
         limit,
         sort_by,
         email,
