@@ -1,7 +1,7 @@
-import { describe, expect, test } from "vitest";
-const prepareSortCondition = require("../../../src/utils/prepareSortCondition");
-const CustomError = require("../../../src/error/customError");
-const errorCode = require("../../../src/error/code");
+import { expect, test } from "vitest";
+import prepareSortCondition from "../../../src/utils/prepareSortCondition";
+import CustomError from "../../../src/error/customError";
+import { BAD_REQUEST } from "../../../src/error/code";
 
 const validTestCases = [
   {
@@ -35,10 +35,11 @@ test("Produce valid sort condition", () => {
 test("Duplicate field", () => {
   duplicateFieldTestCases.forEach(({ condStr, duplicateField }) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const cond = prepareSortCondition(condStr);
     } catch (err) {
       expect(err).toBeInstanceOf(CustomError);
-      expect(err.code).toBe(errorCode.BAD_REQUEST);
+      expect(err.code).toBe(BAD_REQUEST);
       expect(err.details).toBe(`Duplicate field ${duplicateField}`);
     }
   });

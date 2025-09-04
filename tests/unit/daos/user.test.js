@@ -2,22 +2,22 @@ import {
   describe,
   expect,
   beforeEach,
-  afterEach,
   test,
   beforeAll,
   afterAll,
 } from "vitest";
-import {
+import daosFuncs from "../../../src/daos/user";
+const {
   createUser,
   findUserById,
-  returnUsers,
+  returnUsersByOffset,
   updateUser,
   deleteUser,
   getUserCount,
   getUserCountByRole,
   getUserCountByRoles,
   getUserCreatedTime,
-} from "../../../src/daos/user";
+} = daosFuncs;
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
@@ -175,8 +175,11 @@ describe("Aggregate users", () => {
 
   describe("Sort user", () => {
     test("Check user sorted", async () => {
-      const users = await returnUsers();
-      const sortedUsers = await returnUsers({ sort_by: { email: -1 } });
+      const users = await returnUsersByOffset({ limit: 20 });
+      const sortedUsers = await returnUsersByOffset({
+        limit: 20,
+        sort_by: { email: -1 },
+      });
 
       checkUsersList(users, sortedUsers, (a, b) => {
         expect(a).not.toEqual(b);
@@ -190,7 +193,7 @@ describe("Aggregate users", () => {
   });
 
   const getRandomUser = async () => {
-    const users = await returnUsers();
+    const users = await returnUsersByOffset({ limit: 20 });
     const index = Math.floor(Math.random() * users.length);
     return users[index];
   };
@@ -249,8 +252,7 @@ describe("Aggregate users", () => {
       expect(await getUserCountByRole("admin")).toEqual(3);
       expect(await getUserCountByRole("user")).toEqual(1);
 
-      let userRoles;
-      userRoles = await getUserCountByRoles();
+      const userRoles = await getUserCountByRoles();
       userRoles.sort((a, b) => a.count - b.count);
       console.log(userRoles);
 
@@ -261,12 +263,6 @@ describe("Aggregate users", () => {
     });
 
     test("Check role counts after modify", async () => {
-      const sampleUser = await createUser({
-        email: truthyEmail4,
-        role: truthyRole2,
-        password: "thaddkd",
-      });
-
       const sampleAdmin = await createUser({
         email: truthyEmail2,
         role: truthyRole1,
@@ -274,18 +270,18 @@ describe("Aggregate users", () => {
       });
 
       expect(await getUserCountByRole("admin")).toEqual(4);
-      expect(await getUserCountByRole("user")).toEqual(2);
+      expect(await getUserCountByRole("user")).toEqual(1);
       const userRoles = await getUserCountByRoles();
       userRoles.sort((a, b) => a.count - b.count);
       expect(userRoles.length).toBe(2);
       expect(userRoles).toEqual([
-        { role: "user", count: 2 },
+        { role: "user", count: 1 },
         { role: "admin", count: 4 },
       ]);
 
       await deleteUser(sampleAdmin._id);
       expect(await getUserCountByRole("admin")).toEqual(3);
-      expect(await getUserCountByRole("user")).toEqual(2);
+      expect(await getUserCountByRole("user")).toEqual(1);
 
       expect(await getUserCountByRole("kdkdd")).toEqual(0);
     });
