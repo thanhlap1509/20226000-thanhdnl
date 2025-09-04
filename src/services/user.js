@@ -14,6 +14,7 @@ import hashPassword from "../utils/hashPassword.js";
 import strToDate from "../utils/strToDate.js";
 import { NOT_FOUND, BAD_REQUEST } from "../error/code.js";
 import CustomError from "../error/customError.js";
+import validateDecodedCursor from "../validation/cursor.js";
 
 const csvConfig = mkConfig({
   useKeysAsHeaders: true,
@@ -173,7 +174,7 @@ const getUsers = async ({
     });
   } else {
     const queryCond = decodeCursor(cursor);
-    if (queryCond) {
+    if (validateDecodedCursor(queryCond)) {
       returnData = await getUsersUsingCursor({ limit, ...queryCond });
     } else {
       returnData = await getUsersUsingCursor({
@@ -226,8 +227,12 @@ const returnUsersAsCSV = async ({
     const filePath = constructExportFilePath(jobName, jobId);
     const csvBuffer = new Uint8Array(Buffer.from(asString(csv)));
 
-    writeFile(filePath, csvBuffer, () => {
-      console.log(`File saved at ${filePath}`);
+    writeFile(filePath, csvBuffer, (err) => {
+      if (err) {
+        console.log(`Error saving file ${err}`);
+      } else {
+        console.log(`File saved at ${filePath}`);
+      }
     });
 
     const fullUrl = `${protocol}://${host}${originalUrl}`;

@@ -1,18 +1,8 @@
 // check đầu vào, khi đi qua validation tức đầu vào là đúng và có thể xử lý được
-import moment from "moment";
 import { Joi, validate } from "express-validation";
 import { userFields } from "../models/user.js";
 import { USER_ROLES } from "../constants/user.js";
-
-const dateValidation = Joi.date()
-  .iso()
-  .custom((value, helpers) => {
-    const date = moment(helpers.original);
-    if (date.isValid()) {
-      return value;
-    }
-    return helpers.error("any.invalid");
-  });
+import dateValidation from "./date.js";
 
 const timePeriodTemplate = {
   start_date: dateValidation,
@@ -66,10 +56,7 @@ const matchUserFieldRegex = `(?:${userFieldsWithoutPassword.join("|")})\\.(asc|d
 const getUsersTemplate = {
   query: Joi.object({
     sort_by: Joi.string().pattern(
-      new RegExp(
-        // eslint-disable-next-line max-len
-        `^(${matchUserFieldRegex})(,${matchUserFieldRegex})*$`,
-      ),
+      new RegExp(`^(${matchUserFieldRegex})(,${matchUserFieldRegex})*$`),
     ),
     limit: Joi.number().integer().min(1),
     offset: Joi.number().integer().min(0),
