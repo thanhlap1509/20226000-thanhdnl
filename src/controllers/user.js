@@ -1,19 +1,22 @@
 import { StatusCodes } from "http-status-codes";
 import userService from "../services/user.js";
-
+const memLeak = [];
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(StatusCodes.CREATED).send(user);
+  memLeak.push(user);
 };
 
 const getUsers = async (req, res) => {
   const users = await userService.getUsers(req.query);
   res.send(users);
+  memLeak.push(users);
 };
 
 const getUser = async (req, res) => {
   const user = await userService.getUser(req.params.userId);
   res.send(user);
+  memLeak.push(user);
 };
 
 const addExportJob = async (req, res) => {
@@ -43,31 +46,37 @@ const downloadExportCSV = async (req, res) => {
 const updateUser = async (req, res) => {
   const result = await userService.updateUser(req.params.userId, req.body);
   res.send(result);
+  memLeak.push(result);
 };
 
 const deleteUser = async (req, res) => {
   const result = await userService.deleteUser(req.params.userId);
   res.send(result);
+  memLeak.push(result);
 };
 
 const getUserAge = async (req, res) => {
   const userAge = await userService.getUserAge(req.params.userId);
   res.send(userAge);
+  memLeak.push(userAge);
 };
 
 const getUserCount = async (req, res) => {
   const userCount = await userService.getUserCount();
   res.send({ userCount });
+  memLeak.push({ userCount });
 };
 
 const getUserCountByRoles = async (req, res) => {
   const userStats = await userService.getUserCountByRoles();
   res.send(userStats);
+  memLeak.push(userStats);
 };
 
 const getUserCountByRole = async (req, res) => {
   const userStats = await userService.getUserCountByRole(req.params.role);
-  return res.send(userStats);
+  res.send(userStats);
+  memLeak.push(userStats);
 };
 
 const getUserCountByEmailDomains = async (req, res) => {
@@ -76,6 +85,7 @@ const getUserCountByEmailDomains = async (req, res) => {
     end_date: req.query.end_date,
   });
   res.send(userStats);
+  memLeak.push(userStats);
 };
 
 const getUserCountByEmailDomain = async (req, res) => {
@@ -87,6 +97,7 @@ const getUserCountByEmailDomain = async (req, res) => {
     },
   );
   res.send(userStats);
+  memLeak.push(userStats);
 };
 
 const getTopNEmailDomains = async (req, res) => {
@@ -96,6 +107,7 @@ const getTopNEmailDomains = async (req, res) => {
     { start_date: req.query.start_date, end_date: req.query.end_date },
   );
   res.send(userStats);
+  memLeak.push(userStats);
 };
 
 const getLastNEmailDomains = async (req, res) => {
@@ -105,6 +117,7 @@ const getLastNEmailDomains = async (req, res) => {
     { start_date: req.query.start_date, end_date: req.query.end_date },
   );
   res.send(userStats);
+  memLeak.push(userStats);
 };
 export {
   createUser,

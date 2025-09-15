@@ -64,9 +64,6 @@ const returnUsersByOffset = async ({
 }) => {
   const filter = prepareFilter(email, role, start_date, end_date);
   if (sort_by) {
-    console.log("test");
-    console.log(filter, sort_by);
-
     const user = await userModel
       .find(filter, { password: 0 })
       .sort(sort_by)
