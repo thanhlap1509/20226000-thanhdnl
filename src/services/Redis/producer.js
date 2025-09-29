@@ -1,4 +1,4 @@
-import rssQueue from "./rssQueue.js";
+import rssQueue from "./queue.js";
 
 const rssURL = "https://vnexpress.net/rss/the-gioi.rss";
 async function scheduleJob() {
