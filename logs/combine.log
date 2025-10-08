@@ -2,17 +2,274 @@
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:51:19.824Z'
+  timestamp: '2025-10-08T10:36:13.754Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:36:16.370Z
+    }
+  },
+  requestId: '9ab051bb-ec84-4acd-8dde-d76369114d35',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:36:17.369Z'
 }
 {
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:52:47.119Z'
+  timestamp: '2025-10-08T10:37:43.283Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com', role: 'admin' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T10:37:45.260Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:37:45.332Z
+    }
+  },
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:37:46.890Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  statusCode: 201,
+  executionTime: '1632 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T10:37:46.892Z'
 }
 {
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:53:06.190Z'
+  timestamp: '2025-10-08T10:41:15.985Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com', role: 'admin' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T10:41:18.220Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:41:18.293Z
+    }
+  },
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:41:19.580Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  statusCode: 201,
+  executionTime: '1361 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T10:41:19.581Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T10:58:15.279Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T10:59:23.836Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:04:10.279Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'd10a970f-5794-415d-bf1f-955e62552531',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T11:04:19.902Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 400,
+  statusCode: 400,
+  details: [ { role: '"role" is required' } ],
+  level: 'error',
+  message: 'Bad request',
+  timestamp: '2025-10-08T11:04:19.908Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'd10a970f-5794-415d-bf1f-955e62552531',
+  statusCode: 400,
+  executionTime: '11 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T11:04:19.913Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:06:39.217Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'b3ba297b-f846-4992-bc86-4de8a5a28099',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T11:06:46.019Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 400,
+  statusCode: 400,
+  details: [ { role: '"role" is required' } ],
+  level: 'error',
+  message: 'Bad request',
+  timestamp: '2025-10-08T11:06:46.022Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'b3ba297b-f846-4992-bc86-4de8a5a28099',
+  statusCode: 400,
+  executionTime: '6 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T11:06:46.025Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 404,
+  statusCode: 404,
+  details: undefined,
+  level: 'error',
+  message: 'Resource not found /api/use',
+  timestamp: '2025-10-08T11:07:06.761Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:07:38.836Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:08:05.478Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 404,
+  statusCode: 404,
+  details: undefined,
+  level: 'error',
+  message: 'Resource not found /api/use',
+  timestamp: '2025-10-08T11:08:07.375Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:08:55.014Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:20.491Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 404,
+  statusCode: 404,
+  details: undefined,
+  level: 'error',
+  message: 'Resource not found /api/use',
+  timestamp: '2025-10-08T11:09:22.147Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:44.246Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:53.334Z'
+}
+{
+  source: { module: 'errorHandler' },
+  returnCode: 404,
+  statusCode: 404,
+  details: undefined,
+  stackTrace: Error
+      at default (file:///C:/Vbee/express-application/src/middlewares/routeHandler.js:2:17)
+      at Layer.handleRequest (C:\Vbee\express-application\node_modules\router\lib\layer.js:152:17)
+      at trimPrefix (C:\Vbee\express-application\node_modules\router\index.js:342:13)
+      at C:\Vbee\express-application\node_modules\router\index.js:297:9
+      at processParams (C:\Vbee\express-application\node_modules\router\index.js:582:12)
+      at next (C:\Vbee\express-application\node_modules\router\index.js:291:5)
+      at C:\Vbee\express-application\node_modules\router\index.js:688:15
+      at next (C:\Vbee\express-application\node_modules\router\index.js:276:14)
+      at Function.handle (C:\Vbee\express-application\node_modules\router\index.js:186:3)
+      at router (C:\Vbee\express-application\node_modules\router\index.js:60:12) {
+    statusCode: 404
+  },
+  level: 'error',
+  message: 'Resource not found /api/use',
+  timestamp: '2025-10-08T11:09:54.661Z'
 }

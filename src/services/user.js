@@ -15,6 +15,7 @@ import strToDate from "../utils/strToDate.js";
 import { NOT_FOUND, BAD_REQUEST } from "../error/code.js";
 import CustomError from "../error/customError.js";
 import validateDecodedCursor from "../validation/cursor.js";
+import createModuleLogger from "../utils/createModuleLogger.js";
 
 const csvConfig = mkConfig({
   useKeysAsHeaders: true,
@@ -22,7 +23,10 @@ const csvConfig = mkConfig({
   quoteCharacter: "",
 });
 
+const logger = createModuleLogger("user-services");
+
 const performUserIdQuery = async (userId, queryFunc, otherData) => {
+  logger.info(`Perform userId query using ${queryFunc.name} method`);
   if (ObjectId.isValid(userId)) {
     const res = await queryFunc(userId, otherData);
     if (res) {

@@ -1,54 +1,110 @@
 {
   source: { module: 'user-routes' },
-  URL: '/api/user/count',
-  method: 'GET',
+  URL: '/api/user/',
+  requestId: '9ab051bb-ec84-4acd-8dde-d76369114d35',
+  method: 'POST',
   query: [Object: null prototype] {},
   params: {},
+  body: { email: 'tes***@gmail.com', role: 'admin' },
   level: 'http',
   message: 'Http request received',
-  timestamp: '2025-10-08T08:51:31.273Z'
-}
-{
-  source: { module: 'user-routes' },
-  statusCode: 200,
-  executionTime: '32',
-  level: 'http',
-  message: 'Http response transmitted',
-  timestamp: '2025-10-08T08:51:31.304Z'
+  timestamp: '2025-10-08T10:36:16.291Z'
 }
 {
   source: { module: 'user-routes' },
   URL: '/api/user/',
-  method: 'GET',
+  requestId: '9ab051bb-ec84-4acd-8dde-d76369114d35',
+  statusCode: 201,
+  executionTime: '1079 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T10:36:17.370Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  method: 'POST',
   query: [Object: null prototype] {},
   params: {},
+  body: { email: 'tes***@gmail.com', role: 'admin' },
   level: 'http',
   message: 'Http request received',
-  timestamp: '2025-10-08T08:51:56.698Z'
+  timestamp: '2025-10-08T10:37:45.260Z'
 }
 {
   source: { module: 'user-routes' },
-  statusCode: 200,
-  executionTime: '36',
+  URL: '/api/user/',
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  statusCode: 201,
+  executionTime: '1632 ms',
   level: 'http',
   message: 'Http response transmitted',
-  timestamp: '2025-10-08T08:51:56.735Z'
+  timestamp: '2025-10-08T10:37:46.892Z'
 }
 {
   source: { module: 'user-routes' },
-  URL: '/api/user/?limit=20',
-  method: 'GET',
-  query: [Object: null prototype] { limit: '20' },
+  URL: '/api/user/',
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  method: 'POST',
+  query: [Object: null prototype] {},
   params: {},
+  body: { email: 'tes***@gmail.com', role: 'admin' },
   level: 'http',
   message: 'Http request received',
-  timestamp: '2025-10-08T08:52:41.576Z'
+  timestamp: '2025-10-08T10:41:18.220Z'
 }
 {
   source: { module: 'user-routes' },
-  statusCode: 200,
-  executionTime: '35',
+  URL: '/api/user/',
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  statusCode: 201,
+  executionTime: '1361 ms',
   level: 'http',
   message: 'Http response transmitted',
-  timestamp: '2025-10-08T08:52:41.611Z'
+  timestamp: '2025-10-08T10:41:19.581Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'd10a970f-5794-415d-bf1f-955e62552531',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T11:04:19.902Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'd10a970f-5794-415d-bf1f-955e62552531',
+  statusCode: 400,
+  executionTime: '11 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T11:04:19.913Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'b3ba297b-f846-4992-bc86-4de8a5a28099',
+  method: 'POST',
+  query: [Object: null prototype] {},
+  params: {},
+  body: { email: 'tes***@gmail.com' },
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T11:06:46.019Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  requestId: 'b3ba297b-f846-4992-bc86-4de8a5a28099',
+  statusCode: 400,
+  executionTime: '6 ms',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T11:06:46.025Z'
 }

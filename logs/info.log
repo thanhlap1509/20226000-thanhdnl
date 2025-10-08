@@ -2,17 +2,119 @@
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:51:19.824Z'
+  timestamp: '2025-10-08T10:36:13.754Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:36:16.370Z
+    }
+  },
+  requestId: '9ab051bb-ec84-4acd-8dde-d76369114d35',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:36:17.369Z'
 }
 {
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:52:47.119Z'
+  timestamp: '2025-10-08T10:37:43.283Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:37:45.332Z
+    }
+  },
+  requestId: '60b10094-f556-4c7e-994e-4f98ac7e84b2',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:37:46.890Z'
 }
 {
   message: 'App is running on port 5000',
   level: 'info',
   source: { module: 'index' },
-  timestamp: '2025-10-08T08:53:06.190Z'
+  timestamp: '2025-10-08T10:41:15.985Z'
+}
+{
+  source: { module: 'user-controllers' },
+  returnData: {
+    user: {
+      email: 'tes***@gmail.com',
+      role: 'admin',
+      createdAt: 2025-10-08T10:41:18.293Z
+    }
+  },
+  requestId: 'dc3aa70b-b5af-4d8b-bb04-66b26d1c12f3',
+  level: 'info',
+  message: 'User created',
+  timestamp: '2025-10-08T10:41:19.580Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T10:58:15.279Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T10:59:23.836Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:04:10.279Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:06:39.217Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:07:38.836Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:08:05.478Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:08:55.014Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:20.491Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:44.246Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T11:09:53.334Z'
 }

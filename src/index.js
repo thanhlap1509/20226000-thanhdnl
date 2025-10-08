@@ -10,6 +10,7 @@ import router from "./routes/index.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import routeHandler from "./middlewares/routeHandler.js";
 import shutdown from "./utils/shutdown.js";
+import uuidGenerator from "./utils/uuidGenerator.js";
 
 app.set("view engine", "ejs");
 
@@ -22,7 +23,7 @@ app.get("/metrics", async (req, res) => {
   res.setHeader("Content-type", register.contentType);
   res.send(await register.metrics());
 });
-
+app.use(uuidGenerator);
 app.use(json({ limit: "5mb" }));
 app.use("/api", router);
 app.use(routeHandler);

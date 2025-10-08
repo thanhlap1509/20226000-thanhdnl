@@ -8,7 +8,9 @@ import {
   REQUEST_TOO_LARGE,
   OK,
 } from "../error/code.js";
+import createModuleLogger from "../utils/createModuleLogger.js";
 
+const logger = createModuleLogger("errorHandler");
 const errorHandler = (err, req, res, next) => {
   console.log("-------------");
   console.log(err);
@@ -60,6 +62,13 @@ const errorHandler = (err, req, res, next) => {
       details = err.details;
       break;
   }
+  logger.error(message, {
+    returnCode: returnCode,
+    statusCode: statusCode,
+    details: details,
+    stackTrace: err,
+  });
+
   return res.status(returnCode).json({
     statusCode: statusCode,
     message,
