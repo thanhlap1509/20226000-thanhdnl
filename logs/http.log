@@ -1,0 +1,54 @@
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/count',
+  method: 'GET',
+  query: [Object: null prototype] {},
+  params: {},
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T08:51:31.273Z'
+}
+{
+  source: { module: 'user-routes' },
+  statusCode: 200,
+  executionTime: '32',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T08:51:31.304Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/',
+  method: 'GET',
+  query: [Object: null prototype] {},
+  params: {},
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T08:51:56.698Z'
+}
+{
+  source: { module: 'user-routes' },
+  statusCode: 200,
+  executionTime: '36',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T08:51:56.735Z'
+}
+{
+  source: { module: 'user-routes' },
+  URL: '/api/user/?limit=20',
+  method: 'GET',
+  query: [Object: null prototype] { limit: '20' },
+  params: {},
+  level: 'http',
+  message: 'Http request received',
+  timestamp: '2025-10-08T08:52:41.576Z'
+}
+{
+  source: { module: 'user-routes' },
+  statusCode: 200,
+  executionTime: '35',
+  level: 'http',
+  message: 'Http response transmitted',
+  timestamp: '2025-10-08T08:52:41.611Z'
+}

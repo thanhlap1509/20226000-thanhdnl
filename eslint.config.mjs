@@ -6,6 +6,11 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 export default defineConfig([
   {
+    files: ["**/logs/*.{log}"],
+    plugins: { prettier: prettierPlugin },
+    extends: [prettierConfig],
+  },
+  {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: {
       js,

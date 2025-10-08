@@ -1,0 +1,18 @@
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T08:51:19.824Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T08:52:47.119Z'
+}
+{
+  message: 'App is running on port 5000',
+  level: 'info',
+  source: { module: 'index' },
+  timestamp: '2025-10-08T08:53:06.190Z'
+}

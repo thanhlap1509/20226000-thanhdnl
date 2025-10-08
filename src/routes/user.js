@@ -1,5 +1,4 @@
 import { Router } from "express";
-const router = Router();
 import {
   getUsersValidator,
   createUserValidator,
@@ -28,6 +27,13 @@ import {
   deleteUser,
   getUserAge,
 } from "../controllers/user.js";
+import httpLogger from "../middlewares/httpLogger.js";
+import createModuleLogger from "../utils/createModuleLogger.js";
+
+const router = Router();
+const logger = createModuleLogger("user-routes");
+
+router.use(httpLogger(logger));
 
 router
   .route("/")
